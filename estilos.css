@@ -1,0 +1,31 @@
+body{
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    min-height: 100vh;
+}
+
+header h1{
+    text-align: center;
+}
+
+header{
+    background-color: #d9d6ee;
+}
+
+#botaoGerarNum{
+    cursor: pointer; /*Faz o mouse virar aquela mãozinha lá*/
+    border: none;
+    font-size: 40px;
+    color: white;
+    background-color: rgb(65, 203, 65);
+    padding: 10px 20px;
+}
+
+#algumaCoisa {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+}
