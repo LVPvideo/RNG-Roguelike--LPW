@@ -27,5 +27,10 @@ header{
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    flex: 1;
+    flex: 1; /*Precisa desse flex 1 por causa do flexboy no body*/
+}
+
+#estatisticas{
+    position: absolute;
+    right: 5%;
 }
