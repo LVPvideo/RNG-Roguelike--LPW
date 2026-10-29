@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,9 +8,14 @@
 </head>
 <body>
     <header>
-        <h1>RNGuelike</h1> 
-        <p id="conta">sua conta <img src="" alt=""></p>
+        <div class="logo">
+            <h1>RNGuelike</h1> 
+            <p>Uma brincadeira não mata ninguém.</p>
+        </div>
+        
+        <a href="#" id="conta">sua conta <img src="" alt=""></a>
     </header>
+<<<<<<< HEAD
     <div id="estatisticas">
         <h3>Estatísticas</h3>
         <p>Dinheiro: <spam  id="dinheiroAtual"><sub>?</sub>?<sup>?</sup></spam></p>
@@ -36,5 +41,67 @@
     <a href="personalizacao.html" id="personalizarPersonagem">Personalizar personagem</a>
     <!-- <button id="aumentarMult">Multiplicador +1</button> --> 
     <script src="scriptBotao.js"></script>
+=======
+
+    <main>
+
+        <aside id="rankingPagInicial">
+            <h2><span class="emojiTitulo">✦</span> Ranking</h2>
+            <ol>
+                <li>primeiro</li>
+                <li>segundo</li>
+                <li>terceiro</li>
+                <li>quarto</li>
+                <li>quinto</li>
+                <li>sexto</li>
+                <li>setimo</li>
+                <li>oitavo</li>
+                <li>nono</li>
+                <li>decimo</li>
+            </ol>
+
+            <a href="ranking.html" id="link">Ver ranking completo</a>
+        </aside>
+
+        <section class="areaJogo">
+            <p class="placeholder">Teste A Sua Sorte!</p>
+
+            <h2>Qual será o seu próximo número?</h2>
+            <p class="descricao">Clique, sorteie e ganhe!</p>
+
+            <div class="resultado">
+                <span class="rotulo-resultado">RESULTADO</span>
+                <p id="Resultado">???</p>
+            </div>
+
+            <button id="botaoGerarNum"><span class="emojiBotao"></span> Gerar Número</button>
+
+            <p class="dica">Os números variam de 1 a 100</p>
+
+            <a href="personalizacao.html" id="personalizarPersonagem">Personalizar personagem</a>
+        </section>
+
+        <aside class="tabelaEstatisticas">
+            <h2> <span class="emojiTitulo">▤</span> Estatísticas</h2>
+
+            <div class="estatistica">
+                <span>Dinheiro:</span>
+                <strong id="dinheiroAtual"><sub>?</sub>?<sup>?</sup></strong>
+            </div>
+            <div class="estatistica">
+                <span>Cliques:</span>
+                <strong id="totalGerNum">0</strong>
+            </div>
+            <div class="estatistica">
+                <span>Multiplicador:</span>
+                <strong><span id="totalMultiplicador">1</span>x</strong>
+                </div>
+        </aside>
+
+
+    </main>
+
+    <script src="scriptIndex.js"></script>
+>>>>>>> 6811072518e57ac788f10186b460102404215202
 </body>
 </html>
