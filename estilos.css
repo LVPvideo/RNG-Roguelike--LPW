@@ -3,13 +3,143 @@
     src: url('fontes/pixelta/Pixelta.ttf') format('truetype');
     font-weight: normal;
     font-style: normal;
-  }
+}
+
+@media (max-width: 900px) {
+    main {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 22px;
+    }
+
+    .areaJogo {
+        grid-column: 1 / -1;
+        grid-row: 1;
+        padding: 24px 0 36px;
+    }
+
+    #rankingPagInicial,
+    #tabelaEstatisticas {
+        align-self: stretch;
+    }
+}
+
+@media (max-width: 560px) {
+    header {
+        min-height: 145px;
+        padding: 24px 16px 55px;
+    }
+
+    .logo h1 {
+        font-size: 2.8rem;
+    }
+
+    #conta {
+        top: auto;
+        bottom: 16px;
+        right: 20px;
+        transform: none;
+        font-size: 0.9rem;
+    }
+
+    main {
+        width: 90%;
+        padding: 28px 0;
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .areaJogo {
+        grid-column: auto;
+        grid-row: auto;
+        padding: 12px 0 20px;
+    }
+
+    aside {
+        padding: 20px;
+    }
+
+    #rankingPagInicial ol {
+        columns: 2;
+        column-gap: 30px;
+    }
+
+    #rankingPagInicial li {
+        break-inside: avoid;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    #botaoGerarNum {
+        transition: none;
+    }
+}
+
+:root {  /* é tipo o #define em C */
+    --fundo: #f7f1e8;
+    --rosa: #e8cccc;
+    --vinho: #573542;
+    --vinho-escuro: #402630;
+    --verde: #758b70;
+    --verde-hover: #63795e;
+    --painel: #fffaf2;
+    --borda: #dfd1c3;
+    --texto: #3d3030;
+    --texto-suave: #82716d;
+}
+
+* {
+    box-sizing: border-box;
+}
 
 body{
     display: flex;
     flex-direction: column;
     margin: 0;
     min-height: 100vh;
+    background-color: var(--fundo);
+    color: var(--texto);
+    font-family: Georgia, 'Times New Roman', serif;
+}
+
+main {
+    width: min(1400px, 92%);
+    margin: 0 auto;
+    padding: 48px 0;
+    flex: 1;
+    display: grid;
+    grid-template-columns: minmax(210px, 0.85fr)
+                           minmax(320px, 1.7fr)
+                           minmax(210px, 0.85fr);
+    align-items: center;
+    gap: 32px;
+}
+
+aside{
+    padding: 24px;
+    background-color: var(--painel);
+    border: 2px solid var(--borda);
+    border-radius: 12px;
+    box-shadow: 0 4px 0 var(--borda);
+}
+
+aside h2 {
+    margin: 0 0 22px;
+    color: var(--vinho);
+    font-size: 1.4rem;
+}
+
+#rankingPagInicial ol{
+    padding-left: 28px;
+    margin-bottom: 24px;
+}
+
+#rankingPagInicial li {
+    padding: 5px 0;
+    border-bottom: 1px dashed var(--borda);
+}
+
+#rankingPagInicial li::marker {
+    color: var(--verde);
+    font-weight: bold;
 }
 
 header h1{
@@ -24,55 +154,188 @@ header h1{
 }
 
 header{
-    background-color: #eed6d6;
-    text-align: center;
-    position: relative;
-}
-
-#botaoGerarNum{
-    cursor: pointer; /*Faz o mouse virar aquela mãozinha lá*/
-    border: none;
-    font-size: 40px;
-    color: white;
-    background-color: rgb(65, 203, 65);
-    padding: 10px 20px;
-}
-
-#algumaCoisa {
+    min-height: 155px;
+    padding: 24px 5%;
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: center;
-    flex: 1; /*Precisa desse flex 1 por causa do flexboy no body*/
+    position: relative;
+    background-color: var(--rosa);
+    border-bottom: 3px solid var(--vinho);
 }
 
-#estatisticas{
-    position: absolute;
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
+.link,
+#personalizarPersonagem {
+    color: var(--vinho);
+    font-weight: bold;
+    text-decoration: none;
 }
+
+.logo{
+    text-align: center;
+}
+
+.logo h1 {
+    margin: 0;
+    font-family: 'fonteTitulo', Georgia, serif;
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    font-weight: normal;
+    letter-spacing: 2px;
+    color: var(--vinho);
+}
+
+.logo p {
+    margin: 8px 0 0;
+    color: var(--vinho);
+    font-size: 0.95rem;
+}
+
 
 #conta {
     position: absolute;
-    right: 20px;
+    right: 5%; /*porcentagem é melhor pra organizar em telas de tamanhos diferentes*/
     top: 50%;
     transform: translateY(-50%);
+    color: var(--vinho);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.emojiTitulo{
+    color: var(--verde);
+    margin-right: 6px;
+}
+
+.tabelaEstatisticas {
+    align-self: center;
+}
+
+.estatistica {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    gap: 6px;
+    padding: 15px 0;
+    border-bottom: 1px dashed var(--borda);
+}
+
+.estatistica:last-child { /* último elemento do estatistica :P */
+    border-bottom: none;
+}
+
+.estatistica > span { /* o '>' serve pra pegar só o span diretamente após o div */
+    color: var(--texto-suave);
+    font-size: 0.95rem;
+}
+
+.estatistica strong {
+    color: var(--vinho);
+    font-size:25px;
+    overflow-wrap: anywhere;
+}
+
+.areaJogo {
+    min-width: 0;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
     align-items: center;
 }
 
-#personalizarPersonagem {
-    position: absolute;
-    right: 5%;
-    top: 90%;
+.placeholder {
+    color: var(--verde-hover);
+    font-size: 0.8rem;
+    font-weight: bold;
+    letter-spacing: 3px;
 }
 
-#rankingPagInicial {
-    position: fixed;
-    top: 50%;        
-    left: 5%;        
-    transform: translateY(-50%);
-   
+.areaJogo h2 {
+    margin: 12px 0 8px;
+    color: var(--vinho);
+    font-size: clamp(1.5rem, 2.5vw, 2.1rem);
+}
+
+.descricao {
+    margin: 0 0 28px;
+    color: var(--texto-suave);
+    line-height: 1.5;
+}
+
+.resultado {
+    width: min(100%, 330px);
+    min-height: 125px;
+    margin-bottom: 22px;
+    padding: 18px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background-color: var(--painel);
+    border: 2px dashed var(--borda);
+    border-radius: 12px;
+}
+
+.rotulo-resultado {
+    color: var(--texto-suave);
+    font-size: 0.75rem;
+    font-weight: bold;
+    letter-spacing: 3px;
+}
+
+#Resultado {
+    margin: 8px 0 0;
+    color: var(--vinho);
+    font-family: 'fonteTitulo', Georgia, serif;
+    font-size: clamp(2.5rem, 5vw, 3.8rem);
+    overflow-wrap: anywhere;
+}
+
+
+#botaoGerarNum {
+    width: min(100%, 330px);
+    padding: 18px 22px;
+
+    border: 3px solid var(--vinho);
+    border-radius: 8px;
+    background-color: var(--verde);
+    box-shadow: 0 6px 0 var(--vinho);
+
+    color: #fffaf2;
+    font-family: inherit;
+    font-size: 1.4rem;
+    font-weight: bold;
+
+    cursor: pointer;
+    transition: transform 100ms ease,
+                box-shadow 100ms ease,
+                background-color 150ms ease;
+}
+
+#botaoGerarNum:hover {
+    background-color: var(--verde-hover);
+}
+
+#botaoGerarNum:active {
+    transform: translateY(5px);
+    box-shadow: 0 1px 0 var(--vinho);
+}
+
+#botaoGerarNum:focus-visible {
+    outline: 3px solid var(--vinho);
+    outline-offset: 5px;
+}
+
+.emojiBotao {
+    margin-right: 8px;
+}
+
+.dica {
+    margin: 18px 0;
+    color: var(--texto-suave);
+    font-size: 0.9rem;
+}
+
+#personalizarPersonagem {
+    margin-top: 12px;
 }
