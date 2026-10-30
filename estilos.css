@@ -143,34 +143,19 @@ aside h2 {
 }
 
 header h1{
-    font-size: 7vh;
+    text-align: center;
+    font-size: 70px;
     font-family: fonteTitulo;
     letter-spacing: 3px;
+    line-height: 1;
     font-weight: normal;
-    color: #ffffff;
+    display: inline-block;
+    justify-items: center;
 }
 
 header{
-<<<<<<< HEAD
-    position: relative;
-    background-color: rgb(101, 129, 255);
-    text-align: center;
-    height: 120px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#botaoGerarNum{
-    cursor: pointer; /*Faz o mouse virar aquela mãozinha lá*/
-    padding: 10px 20px;
-}
-
-#botaoDiv {
-=======
     min-height: 155px;
     padding: 24px 5%;
->>>>>>> 6811072518e57ac788f10186b460102404215202
     display: flex;
     align-items: center;
     justify-content: center;
@@ -179,27 +164,11 @@ header{
     border-bottom: 3px solid var(--vinho);
 }
 
-<<<<<<< HEAD
-#estatisticas{
-    position: absolute;
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
-    background-color: rgb(101, 129, 255);
-    color: #ffffff;
-    border-radius: 25px;
-    font-size: 25px;
-    text-align: center;
-    padding: 10px 30px;
-    text-align: center;
-    width: max-content;
-=======
 .link,
 #personalizarPersonagem {
     color: var(--vinho);
     font-weight: bold;
     text-decoration: none;
->>>>>>> 6811072518e57ac788f10186b460102404215202
 }
 
 .logo{
@@ -224,77 +193,6 @@ header{
 
 #conta {
     position: absolute;
-<<<<<<< HEAD
-    right: 20px;
-    color: #ffffff;
-}
-
-#personalizarPersonagem {
-    position: absolute;
-    right: 5%;
-    top: 90%;
-    font-size: 30px;
-    color: rgb(255, 255, 255);
-    border: 10px solid rgb(101, 129, 255);
-    border-radius: 25px;
-    background-color: rgb(101, 129, 255);
-    padding: 15px;
-    font-style: normal;
-    text-decoration: none;
-}
-
-#rankingPagInicial {
-    position: fixed;
-    top: 50%;        
-    left: 5%;        
-    transform: translateY(-50%);
-    background-color: rgb(101, 129, 255);
-    color: #ffffff;
-    border-radius: 25px;
-    font-size: 25px;
-    text-align: center;
-    padding: 10px 30px;
-    text-align: center;
-    width: max-content;
-}
-
-#rankingVerMais {
-    font-size: 25px;
-    color: rgb(101, 129, 255);
-    border: 2px solid rgb(255, 255, 255);
-    border-radius: 15px;
-    background-color: rgb(255, 255, 255);
-    padding: 5px 26px;
-    font-style: normal;
-    text-decoration: none;
-    display: inline-block;
-    text-align: center;
-    margin-bottom: 10px;
-}
-
-#rankingPagInicial ol {
-    padding-left: 25px; 
-    margin-top: 15px;
-    list-style-type: none;
-    counter-reset: contadorRanking;
-}
-
-#rankingPagInicial li {
-    margin-left: 5px;
-    margin-bottom: 8px; 
-    font-size: 18px;    
-    color: #ffffff;    
-    counter-increment: contadorRanking; 
-}
-
-#rankingPagInicial li::marker {
-    color: rgb(255, 255, 255);
-    font-weight: bold;
-    content: counter(contadorRanking) " ";
-    font-weight: bold;
-    margin-right: 10px;
-    text-align: center;
-=======
     right: 5%; /*porcentagem é melhor pra organizar em telas de tamanhos diferentes*/
     top: 50%;
     transform: translateY(-50%);
@@ -440,5 +338,20 @@ header{
 
 #personalizarPersonagem {
     margin-top: 12px;
->>>>>>> 6811072518e57ac788f10186b460102404215202
 }
+
+
+
+/* página da conta */
+
+#informacoesConta {
+    display: flex;
+    align-items: center;
+    gap: 15px; 
+}
+
+#textos {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
