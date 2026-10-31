@@ -73,17 +73,31 @@
     }
 }
 
-:root {  /* é tipo o #define em C */
-    --fundo: #f7f1e8;
-    --rosa: #e8cccc;
-    --vinho: #573542;
-    --vinho-escuro: #402630;
-    --verde: #758b70;
-    --verde-hover: #63795e;
-    --painel: #fffaf2;
-    --borda: #dfd1c3;
-    --texto: #3d3030;
-    --texto-suave: #82716d;
+:root {
+    --fundo: #EAF3F0;
+    --azul-leve: #B8D9D5;
+    --azul-oceano: #245766;
+    --azul-profundo: #173B46;
+    --verde: #668C72;
+    --verde-hover: #52745D;
+    --painel: #F7FBF8;
+    --borda: #C5DAD5;
+    --texto: #263B3D;
+    --texto-suave: #647D7D;
+}
+
+[data-tema="escuro"] {
+    /* Modo abissal */
+    --fundo: #102A35;
+    --azul-leve: #193B48;
+    --azul-oceano: #367487;
+    --azul-profundo: #0B2029;
+    --verde: #719B82;
+    --verde-hover: #587D69;
+    --painel: #193B48;
+    --borda: #315461;
+    --texto: #E2EFEC;
+    --texto-suave: #A8C0C0;
 }
 
 * {
@@ -123,7 +137,7 @@ aside{
 
 aside h2 {
     margin: 0 0 22px;
-    color: var(--vinho);
+    color: var(--azul-oceano);
     font-size: 1.4rem;
 }
 
@@ -160,13 +174,13 @@ header{
     align-items: center;
     justify-content: center;
     position: relative;
-    background-color: var(--rosa);
-    border-bottom: 3px solid var(--vinho);
+    background-color: var(--azul-leve);
+    border-bottom: 3px solid var(--azul-oceano);
 }
 
-.link,
+#link,
 #personalizarPersonagem {
-    color: var(--vinho);
+    color: var(--azul-oceano);
     font-weight: bold;
     text-decoration: none;
 }
@@ -181,12 +195,12 @@ header{
     font-size: clamp(2.8rem, 5vw, 4.5rem);
     font-weight: normal;
     letter-spacing: 2px;
-    color: var(--vinho);
+    color: var(--azul-oceano);
 }
 
 .logo p {
     margin: 8px 0 0;
-    color: var(--vinho);
+    color: var(--azul-oceano);
     font-size: 0.95rem;
 }
 
@@ -196,7 +210,7 @@ header{
     right: 5%; /*porcentagem é melhor pra organizar em telas de tamanhos diferentes*/
     top: 50%;
     transform: translateY(-50%);
-    color: var(--vinho);
+    color: var(--azul-oceano);
     text-decoration: none;
     font-weight: bold;
 }
@@ -228,7 +242,7 @@ header{
 }
 
 .estatistica strong {
-    color: var(--vinho);
+    color: var(--azul-oceano);
     font-size:25px;
     overflow-wrap: anywhere;
 }
@@ -250,7 +264,7 @@ header{
 
 .areaJogo h2 {
     margin: 12px 0 8px;
-    color: var(--vinho);
+    color: var(--azul-oceano);
     font-size: clamp(1.5rem, 2.5vw, 2.1rem);
 }
 
@@ -285,7 +299,7 @@ header{
 
 #Resultado {
     margin: 8px 0 0;
-    color: var(--vinho);
+    color: var(--azul-oceano);
     font-family: 'fonteTitulo', Georgia, serif;
     font-size: clamp(2.5rem, 5vw, 3.8rem);
     overflow-wrap: anywhere;
@@ -296,10 +310,10 @@ header{
     width: min(100%, 330px);
     padding: 18px 22px;
 
-    border: 3px solid var(--vinho);
+    border: 3px solid var(--azul-oceano);
     border-radius: 8px;
     background-color: var(--verde);
-    box-shadow: 0 6px 0 var(--vinho);
+    box-shadow: 0 6px 0 var(--azul-oceano);
 
     color: #fffaf2;
     font-family: inherit;
@@ -318,11 +332,11 @@ header{
 
 #botaoGerarNum:active {
     transform: translateY(5px);
-    box-shadow: 0 1px 0 var(--vinho);
+    box-shadow: 0 1px 0 var(--azul-oceano);
 }
 
 #botaoGerarNum:focus-visible {
-    outline: 3px solid var(--vinho);
+    outline: 3px solid var(--azul-oceano);
     outline-offset: 5px;
 }
 
@@ -408,4 +422,15 @@ header{
 #estatisticasConta {
     padding-left: 70px;
     font-size: 30px;
+}
+
+#botaoModoEscuro {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+#botaoModoEscuro img{
+    width: 35px;
+    height: 35px;
 }
