@@ -198,6 +198,16 @@ header{
     color: var(--azul-oceano);
 }
 
+.logo h2 {
+    margin: 0;
+    font-family: 'fonteTitulo', Georgia, serif;
+    font-size: clamp(35px, 5vw, 65px);
+    font-weight: lighter;
+    letter-spacing: 1.5px;
+    word-spacing: 7px;
+    color: var(--azul-oceano);
+}
+
 .logo p {
     margin: 8px 0 0;
     color: var(--azul-oceano);
@@ -397,17 +407,22 @@ header{
 }
 
 #voltar {
-        align-self: flex-start;
+        position: absolute;
+        right: 5%;
+        top: 10%;
         font-family: 'Segoe UI', Roboto, sans-serif;
         align-items: center;
-        padding-left: 50px;
-        padding-bottom: 20px;
         color: rgb(83, 67, 112);
         text-decoration: none;
         font-weight: 500;
-        font-size: 70px;
+        font-size: 30px;
         cursor: pointer;
         
+}
+
+#voltar span{ /*alguém sabe alinhar a seta com o texto aí? :P */
+        font-size: 70px;
+        /*padding-bottom: px;*/
 }
 
 #textos h2 {

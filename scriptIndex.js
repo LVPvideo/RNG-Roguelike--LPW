@@ -7,20 +7,39 @@ const textoTotalAtual = document.querySelector('#dinheiroAtual');
 const textoCliquesTotal = document.querySelector('#totalGerNum');
 const textoMultiplicador = document.querySelector('#totalMultiplicador');
 
- let totalAtual = 0, qtdGeracoes = 0, valorMultiplicador = 1, modoEscuro = false;
+let dinheiroAtual = Number(localStorage.getItem("dinheiro")) || 0;
+/* Esse código busca nos valores salvos o "dinheiro", e se não achar, o valor é 0 */
+let cliques = Number(localStorage.getItem("cliques")) || 0;
+let valorMultiplicador = Number(localStorage.getItem("multiplicador")) || 1;
+
+let modoEscuro = false;
+
+/* === Fim das Declarações === */
+
+
+
+/* === Inicialização dos valores de estatísticas == */
+
+textoTotalAtual.textContent = dinheiroAtual;
+textoCliquesTotal.textContent = cliques;
+
 
 botaoGerarNum.addEventListener('click', function(){
     let valorGerado, aux = 0;
-    qtdGeracoes++;
+    cliques++;
     for(let i = 0; i < valorMultiplicador; i++) {
         valorGerado = Math.random();
         valorGerado = (Math.floor(valorGerado * 100) + 1);
-        totalAtual += valorGerado;
         aux += valorGerado;
     }
+
+    dinheiroAtual += aux;
+    localStorage.setItem("dinheiro", dinheiroAtual);
+    localStorage.setItem("cliques", cliques);
+
     textoResultado.textContent = aux;
-    textoTotalAtual.textContent = totalAtual;
-    textoCliquesTotal.textContent = qtdGeracoes;
+    textoTotalAtual.textContent = dinheiroAtual;
+    textoCliquesTotal.textContent = cliques;
 });
 
 
