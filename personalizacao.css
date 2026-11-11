@@ -213,26 +213,6 @@ botoesSalvar
 
 }
 
-#vizualPeixe {
-    background-color: #005e99;
-    border: 3px solid #002a43;
-    border-radius: 8px;
-    box-shadow: 0 6px 0 #002a43;
-    width: 330px;
-}
-:root {
-    --fundo: #EAF3F0;
-    --azul-leve: #B8D9D5;
-    --azul-oceano: #245766;
-    --azul-profundo: #173B46;
-    --verde: #668C72;
-    --verde-hover: #52745D;
-    --painel: #F7FBF8;
-    --borda: #C5DAD5;
-    --texto: #263B3D;
-    --texto-suave: #647D7D;
-}
-
 
 .elementos {
     text-align: center;
@@ -240,17 +220,17 @@ botoesSalvar
 
 #vizualPeixe {
     background-color: var(--fundo);
-    border: 3px solid #002a43;
+    border: 3px solid var(--azul-oceano);
     border-radius: 8px;
-    box-shadow: 0 6px 0 #002a43;
+    box-shadow: 0 6px 0 var(--azul-oceano);
     width: 330px;
 }
 
 #personalizacaoPeixe {
-    background-color: #005e99;
-    border: 3px solid #002a43;
+    background-color: var(--fundo);
+    border: 3px solid var(--azul-oceano);
     border-radius: 8px;
-    box-shadow: 0 6px 0 #002a43;
+    box-shadow: 0 6px 0 var(--azul-oceano);
     width: 330px;
 }
 
