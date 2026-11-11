@@ -369,7 +369,7 @@ header{
 /* página da conta */
 
 #paginaConta {
-    width: min(900px, 90%);
+    width: min(1000px, 92%); 
     margin: 40px auto;
     display: flex;
     flex-direction: column;
@@ -381,13 +381,14 @@ header{
     display: flex;
     align-items: center;
     gap: 25px;
-    padding: 25px;
+    padding: 30px;
     background-color: var(--painel);
     border: 3px solid var(--azul-oceano);
     border-radius: 12px;
     box-shadow: 0 4px 0 rgba(0, 0, 0, 0.1);
+    width: 100%; 
+    box-sizing: border-box;
 }
-
 #pfp {
     width: 140px;
     height: 140px;
@@ -401,17 +402,19 @@ header{
     display: flex;
     flex-direction: column;
     gap: 12px; 
-    width: 100%;
+    flex: 1;
 }
 
 .linha-info {
     display: flex;
     align-items: baseline;
-    gap: 10px;
-    padding: 8px 12px;
+    gap: 15px;
+    padding: 12px 16px;
     background-color: var(--fundo);
     border: 2px solid var(--borda);
     border-radius: 6px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .linha-info .rotulo {
@@ -444,11 +447,13 @@ header{
 }
 
 #estatisticasConta {
-    padding: 25px;
+    padding: 30px;
     background-color: var(--painel);
     border: 3px solid var(--azul-oceano);
     border-radius: 12px;
     box-shadow: 0 4px 0 rgba(0, 0, 0, 0.1);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 #estatisticasConta h2 {
