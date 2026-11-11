@@ -6,6 +6,7 @@
     <title>Conta</title>
     <link rel="stylesheet" href="estilos.css">
     <link rel="stylesheet" href="https://googleapis.com"/>
+    <link rel="shortcut icon" href="imagens/icone-perfil.png" type="image/x-icon">
 </head>
 <body data-tema="claro">
     <header>
@@ -22,37 +23,63 @@
     </header>
 
     <main id="paginaConta">
-        <div id="informacoesConta">
-    <!-- Foto de perfil na esquerda -->
-    <img src="imagens/icone-perfil.png" alt="Foto de perfil" id="pfp">
-    
-    <!-- Bloco de textos empilhados organizadamente -->
-    <div id="textos">
-        <div class="linha-info">
-            <span class="rotulo">Nome:</span>
-            <span id="nomeUsuario" class="valor-info">Seu Nome</span>
+    <div id="informacoesConta">
+        
+        <div class="container-foto">
+            <img src="imagens/icone-perfil.png" alt="Foto de perfil" id="pfp">
+            <input type="file" id="inputFoto" accept="image/*" style="display: none;">
+            <button id="botaoTrocarFoto" class="btn-acao">Mudar Foto</button>
         </div>
         
-        <div class="linha-info">
-            <span class="rotulo">Arroba:</span>
-            <span id="arrobaUsuario" class="valor-info">@seuusuario</span>
-        </div>
-        
-        <div class="linha-info">
-            <span class="rotulo">Biografia:</span>
-            <span id="biografiaUsuario" class="valor-info"><i>Escreva sua biografia aqui!</i></span>
+        <div id="textos">
+            
+            <div id="modoVisualizacao">
+                <div class="linha-info">
+                    <span class="rotulo">Nome:</span>
+                    <span id="visorNome" class="valor-info">Nome</span>
+                </div>
+                <div class="linha-info">
+                    <span class="rotulo">Arroba:</span>
+                    <span id="visorArroba" class="valor-info">@arroba</span>
+                </div>
+                <div class="linha-info">
+                    <span class="rotulo">Biografia:</span>
+                    <span id="visorBio" class="valor-info">Escreva sua biografia aqui!</span>
+                </div>
+                <button id="botaoEditar" class="btn-acao" style="margin-top: 10px;">Editar Perfil</button>
+            </div>
+
+           
+            <div id="modoEdicao" style="display: none;">
+                <div class="linha-info">
+                    <span class="rotulo">Nome:</span>
+                    <input type="text" id="inputNome" class="campo-input">
+                </div>
+                <div class="linha-info">
+                    <span class="rotulo">Arroba:</span>
+                    <input type="text" id="inputArroba" class="campo-input">
+                </div>
+                <div class="linha-info">
+                    <span class="rotulo">Biografia:</span>
+                    <textarea id="inputBio" class="campo-input"></textarea>
+                </div>
+                <div style="display: flex; gap: 10px; margin-top: 10px;">
+                    <button id="botaoSalvar" class="btn-acao">Salvar</button>
+                    <button id="botaoCancelar" class="btn-acao" style="background-color: var(--texto-suave);">Cancelar</button>
+                </div>
+            </div>
         </div>
     </div>
-</div>
 
-        <div id="estatisticasConta">
-            <h2>Estatísticas</h2>
-            <p>Dinheiro: <span id="dinheiroAtual">0</span></p>
-            <p>Cliques: <span id="totalGerNum">0</span></p>
-            <p>Multiplicador: <span id="totalMultiplicador">1</span>x</p>
-        </div>
-    </main>
+    <div id="estatisticasConta">
+        <h2>Estatísticas</h2>
+        <p>Dinheiro: <span id="dinheiroAtual">0</span></p>
+        <p>Cliques: <span id="totalGerNum">0</span></p>
+        <p>Multiplicador: <span id="totalMultiplicador">1</span>x</p>
+    </div>
+</main>
 
     <script src="scriptIndex.js"></script>
+    <script src="conta.js"></script>
 </body>
 </html>

@@ -423,7 +423,7 @@ header{
     color: var(--texto-suave);
     text-transform: uppercase;
     letter-spacing: 1px;
-    min-width: 90px; /* Alinha os valores bonitinhos na vertical */
+    min-width: 90px;
 }
 
 #textos h1,
@@ -483,4 +483,44 @@ header{
 #botaoModoEscuro img {
     width: 35px;
     height: 35px;
+}
+
+.campo-input {
+    width: 100%;
+    padding: 6px 10px;
+    font-family: inherit;
+    font-size: 1rem;
+    border: 2px solid var(--azul-oceano);
+    border-radius: 4px;
+    background-color: var(--fundo);
+    color: var(--texto);
+}
+
+textarea.campo-input {
+    resize: vertical;
+    min-height: 50px;
+}
+
+.container-foto {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.btn-acao {
+    padding: 8px 16px;
+    background-color: var(--azul-oceano);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-family: inherit;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-acao:hover {
+    opacity: 0.9;
 }
