@@ -71,3 +71,35 @@ function mostrarRanking() {
 }
 
 mostrarRanking();
+
+const formRegistro = document.querySelector('#formRegistro');
+const campoNome = document.querySelector('#campoNome');
+const textoPontosAtuais = document.querySelector('#pontosAtuais');
+const mensagemFormulario = document.querySelector('#mensagemFormulario');
+
+const pontosAtuais = Number(localStorage.getItem('dinheiro')) || 0;
+textoPontosAtuais.textContent = pontosAtuais.toLocaleString('pt-BR');
+
+function mostrarMensagem(texto, ehErro) {
+    mensagemFormulario.textContent = texto;
+    mensagemFormulario.classList.toggle('erro', ehErro);
+}
+
+formRegistro.addEventListener('submit', function(evento) {
+    evento.preventDefault();
+
+    const nome = campoNome.value.trim();
+
+    if (nome === '') {
+        mostrarMensagem('Digite um nome para entrar no ranking.', true);
+        return;
+    }
+    if (pontosAtuais <= 0) {
+        mostrarMensagem('Gere alguns números no jogo antes de registrar.', true);
+        return;
+    }
+
+    registrarPontuacao(nome, pontosAtuais);
+    mostrarRanking();
+    mostrarMensagem('Pontuação registrada!', false);
+});

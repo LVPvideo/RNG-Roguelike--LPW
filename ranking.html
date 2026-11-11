@@ -22,6 +22,22 @@
     </header>
 
     <main class="paginaRanking">
+        <section class="painelRegistro" aria-labelledby="tituloRegistro">
+            <h2 id="tituloRegistro">Registrar pontuação</h2>
+
+            <form id="formRegistro">
+                <label for="campoNome">Seu nome</label>
+                <input type="text" id="campoNome" maxlength="20" autocomplete="nickname" placeholder="Ex.: Peixe Sortudo">
+
+                <p class="pontosAtuais">
+                    Seus pontos agora:
+                    <strong id="pontosAtuais">0</strong>
+                </p>
+
+                <button type="submit" id="botaoRegistrar">Registrar no ranking</button>
+                <p id="mensagemFormulario" role="status"></p>
+            </form>
+        </section>
         <section class="painelRanking" aria-labelledby="tituloRanking">
             <h2 id="tituloRanking">Classificação</h2>
             <ol id="listaRanking"></ol>

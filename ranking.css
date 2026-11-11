@@ -7,14 +7,13 @@
     color: var(--azul-oceano);
 }
 
-/* --- Layout da página --- */
-
 .paginaRanking {
     width: min(1100px, 92%);
-    grid-template-columns: minmax(0, 1fr);
+    grid-template-columns: minmax(260px, 1fr) minmax(0, 2fr);
     align-items: start;
 }
 
+.painelRegistro,
 .painelRanking {
     padding: 24px;
     background-color: var(--painel);
@@ -23,13 +22,94 @@
     box-shadow: 0 4px 0 var(--borda);
 }
 
+.painelRegistro h2,
 .painelRanking h2 {
     margin: 0 0 22px;
     color: var(--azul-oceano);
     font-size: 1.4rem;
 }
 
-/* --- Lista de jogadores --- */
+/* --- Formulário de registro --- */
+
+#formRegistro {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+#formRegistro label {
+    color: var(--texto-suave);
+    font-size: 0.95rem;
+}
+
+#campoNome {
+    padding: 12px;
+    background-color: var(--fundo);
+    border: 2px solid var(--borda);
+    border-radius: 8px;
+    color: var(--texto);
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+#campoNome:focus-visible {
+    outline: 3px solid var(--azul-oceano);
+    outline-offset: 2px;
+}
+
+.pontosAtuais {
+    margin: 12px 0;
+    color: var(--texto-suave);
+}
+
+#pontosAtuais {
+    display: block;
+    color: var(--azul-oceano);
+    font-family: 'fonteTitulo', Georgia, serif;
+    font-size: 2rem;
+    overflow-wrap: anywhere;
+}
+
+#botaoRegistrar {
+    padding: 14px 18px;
+    background-color: var(--verde);
+    border: 3px solid var(--azul-oceano);
+    border-radius: 8px;
+    box-shadow: 0 5px 0 var(--azul-oceano);
+    color: #fffaf2;
+    font-family: inherit;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 100ms ease,
+                box-shadow 100ms ease,
+                background-color 150ms ease;
+}
+
+#botaoRegistrar:hover {
+    background-color: var(--verde-hover);
+}
+
+#botaoRegistrar:active {
+    transform: translateY(4px);
+    box-shadow: 0 1px 0 var(--azul-oceano);
+}
+
+#botaoRegistrar:focus-visible {
+    outline: 3px solid var(--azul-oceano);
+    outline-offset: 5px;
+}
+
+#mensagemFormulario {
+    min-height: 1.4em;
+    margin: 6px 0 0;
+    color: var(--azul-oceano);
+    font-size: 0.9rem;
+}
+
+#mensagemFormulario.erro {
+    color: #b3261e;
+}
 
 #listaRanking {
     margin: 0;
@@ -75,7 +155,11 @@
     text-align: center;
 }
 
-/* --- Telas pequenas (a partir de 320px) --- */
+@media (max-width: 900px) {
+    .paginaRanking {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
 
 @media (max-width: 560px) {
     #voltar {
@@ -86,6 +170,7 @@
         font-size: 0.9rem;
     }
 
+    .painelRegistro,
     .painelRanking {
         padding: 18px;
     }
