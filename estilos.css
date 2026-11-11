@@ -368,67 +368,105 @@ header{
 
 /* página da conta */
 
+#paginaConta {
+    width: min(900px, 90%);
+    margin: 40px auto;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    flex: 1;
+}
+
 #informacoesConta {
     display: flex;
-    align-items: flex-start;
-    gap: 15px;
-    margin-top: 20px;
-    margin-left: 50px; 
-    width: 90%;
-    border: 4px solid var(--azul-oceano);
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    align-self: flex-start;
+    align-items: center;
+    gap: 25px;
+    padding: 25px;
     background-color: var(--painel);
+    border: 3px solid var(--azul-oceano);
+    border-radius: 12px;
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+#pfp {
+    width: 140px;
+    height: 140px;
+    object-fit: cover;
+    border: 3px solid var(--azul-oceano);
+    border-radius: 8px;
+    flex-shrink: 0;
 }
 
 #textos {
     display: flex;
     flex-direction: column;
-    gap: 5px;
-    margin-top: 20px;
-    margin-left: 28px;
-    font-size: 30px;
-    font-family: fonteTitulo;
-    letter-spacing: 3px;
-    line-height: 1;
-    font-weight: normal;
-    display: inline-block;
+    gap: 12px; 
+    width: 100%;
 }
 
-#textos p {
-    padding-top: 20px;
-    padding-left: 20px;
+.linha-info {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    padding: 8px 12px;
+    background-color: var(--fundo);
+    border: 2px solid var(--borda);
+    border-radius: 6px;
+}
+
+.linha-info .rotulo {
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: var(--texto-suave);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    min-width: 90px; /* Alinha os valores bonitinhos na vertical */
 }
 
 #textos h1,
 #textos h2,
-#textos p {
+#textos p,
+#textos span:not(.rotulo) {
     margin: 0;
+    padding: 0;
+}
+
+#textos h2 {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--azul-oceano);
+}
+
+#textos span:not(.rotulo) {
+    font-size: 1.1rem;
+    color: var(--texto);
+    font-weight: normal;
+}
+
+#estatisticasConta {
+    padding: 25px;
+    background-color: var(--painel);
+    border: 3px solid var(--azul-oceano);
+    border-radius: 12px;
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.1);
+}
+
+#estatisticasConta h2 {
+    margin-top: 0;
+    color: var(--azul-oceano);
+    font-size: 1.5rem;
 }
 
 #voltar {
     position: absolute;
     left: 5%;
+    top: 50%;
     transform: translateY(-50%);
     font-family: inherit;
     font-size: 1rem;
     font-weight: bold;
     color: var(--azul-oceano);
-   
-}
-#textos h2 {
-    padding-left: 10px;
-    font-size: 25px;
-}
-
-#pfp {
-    border-right: 3px solid var(--azul-oceano);
-}
-
-#estatisticasConta {
-    padding-left: 70px;
-    font-size: 30px;
+    text-decoration: none;
 }
 
 #botaoModoEscuro {
@@ -437,8 +475,7 @@ header{
     cursor: pointer;
 }
 
-#botaoModoEscuro img{
+#botaoModoEscuro img {
     width: 35px;
     height: 35px;
 }
-

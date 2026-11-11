@@ -6,7 +6,6 @@
     <title>Conta</title>
     <link rel="stylesheet" href="estilos.css">
     <link rel="stylesheet" href="https://googleapis.com"/>
-
 </head>
 <body data-tema="claro">
     <header>
@@ -21,24 +20,39 @@
 
         <a href="index.html" id="voltar">&larr; voltar</a>
     </header>
-    <div id=" paginaConta">
+
+    <main id="paginaConta">
         <div id="informacoesConta">
-            <img src="imagens/icone-perfil.png" alt="" width="200px" id="pfp">
-            <div id="textos">
-                <h1 class="nomeArroba">arroba</h2>
-                <h2 class="nomeArroba">nome</h2>
-                <p>Biografia: <span id="biografiaUsuario"><i>Escreva sua biografia aqui!</i></span> </p>
-            </div>
+    <!-- Foto de perfil na esquerda -->
+    <img src="imagens/icone-perfil.png" alt="Foto de perfil" id="pfp">
+    
+    <!-- Bloco de textos empilhados organizadamente -->
+    <div id="textos">
+        <div class="linha-info">
+            <span class="rotulo">Nome:</span>
+            <span id="nomeUsuario" class="valor-info">Seu Nome</span>
         </div>
-        <div id="estatisticasConta">
-            <h2>Estatísticas</h2>
-            <p>Dinheiro: <spam  id="dinheiroAtual">0</spam></p>
-            <p>Cliques: <spam id="totalGerNum">0</spam></p>
-            <p>Multiplicador: <spam id="totalMultiplicador">1</spam>x</p>
-            </p>
+        
+        <div class="linha-info">
+            <span class="rotulo">Arroba:</span>
+            <span id="arrobaUsuario" class="valor-info">@seuusuario</span>
+        </div>
+        
+        <div class="linha-info">
+            <span class="rotulo">Biografia:</span>
+            <span id="biografiaUsuario" class="valor-info"><i>Escreva sua biografia aqui!</i></span>
         </div>
     </div>
-    <script src="scriptIndex.js"></script>
+</div>
 
+        <div id="estatisticasConta">
+            <h2>Estatísticas</h2>
+            <p>Dinheiro: <span id="dinheiroAtual">0</span></p>
+            <p>Cliques: <span id="totalGerNum">0</span></p>
+            <p>Multiplicador: <span id="totalMultiplicador">1</span>x</p>
+        </div>
+    </main>
+
+    <script src="scriptIndex.js"></script>
 </body>
 </html>
