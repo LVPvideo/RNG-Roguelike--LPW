@@ -1,6 +1,5 @@
 const CHAVE_RANKING = "ranking";
 
-
 function carregarRanking() {
     try {
         const lista = JSON.parse(localStorage.getItem(CHAVE_RANKING));
@@ -36,8 +35,15 @@ function registrarPontuacao(nome, pontos) {
     salvarRanking(lista);
 }
 
+function removerJogador(nome) {
+    salvarRanking(carregarRanking().filter(function(jogador) {
+        return jogador.nome !== nome;
+    }));
+}
+
 const listaRanking = document.querySelector('#listaRanking');
 const mensagemVazio = document.querySelector('#mensagemVazio');
+const botaoLimpar = document.querySelector('#botaoLimpar');
 
 function criarItemRanking(jogador, posicao) {
     const item = document.createElement('li');
@@ -55,7 +61,15 @@ function criarItemRanking(jogador, posicao) {
     textoPontos.className = 'pontosJogador';
     textoPontos.textContent = jogador.pontos.toLocaleString('pt-BR');
 
-    item.append(textoPosicao, textoNome, textoPontos);
+    const botaoRemover = document.createElement('button');
+    botaoRemover.type = 'button';
+    botaoRemover.className = 'botaoRemover';
+    botaoRemover.textContent = '✕';
+    botaoRemover.title = 'Remover do ranking';
+    botaoRemover.setAttribute('aria-label', 'Remover ' + jogador.nome + ' do ranking');
+    botaoRemover.dataset.nome = jogador.nome;
+
+    item.append(textoPosicao, textoNome, textoPontos, botaoRemover);
     return item;
 }
 
@@ -68,6 +82,37 @@ function mostrarRanking() {
     });
 
     mensagemVazio.hidden = ranking.length > 0;
+    botaoLimpar.hidden = ranking.length === 0;
+}
+
+/* Um só ouvinte na lista serve para todos os botões, mesmo os criados depois. */
+listaRanking.addEventListener('click', function(evento) {
+    const botao = evento.target.closest('.botaoRemover');
+    if (botao) {
+        removerJogador(botao.dataset.nome);
+        mostrarRanking();
+    }
+});
+
+let temporizadorLimpar;
+
+botaoLimpar.addEventListener('click', function() {
+    if (!botaoLimpar.classList.contains('confirmando')) {
+        botaoLimpar.classList.add('confirmando');
+        botaoLimpar.textContent = 'Clique de novo para apagar tudo';
+        temporizadorLimpar = setTimeout(restaurarBotaoLimpar, 3000);
+        return;
+    }
+
+    salvarRanking([]);
+    restaurarBotaoLimpar();
+    mostrarRanking();
+});
+
+function restaurarBotaoLimpar() {
+    clearTimeout(temporizadorLimpar);
+    botaoLimpar.classList.remove('confirmando');
+    botaoLimpar.textContent = 'Limpar ranking';
 }
 
 mostrarRanking();
