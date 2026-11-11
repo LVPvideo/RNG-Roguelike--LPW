@@ -97,6 +97,94 @@ h2 {
 }
 
 
+
+
+/* ORGANIZAÇÃO DOS ELEMENTOS */
+
+.elementos {
+    width: 90%;
+    max-width: 1000px;
+    margin: 50px auto;
+    
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    align-items: stretch;
+}
+
+/* PAINÉIS PRINCIPAIS */
+
+#vizualPeixe,
+#personalizacaoPeixe {
+    width: 100%;
+    min-height: 350px;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+
+
+.opcoesPersonalizacao {
+    display: flex;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.opcaoPersonalizacao {
+    padding: 18px 10px;
+
+    background-color: #2da0e7;
+    border: 3px solid #002a43;
+    border-radius: 8px;
+    box-shadow: 0 4px 0 #002a43;
+    
+    color: #002a43;
+    font-family: inherit;
+    font-size: 17px;
+    font-weight: bold;
+
+    cursor: pointer;
+    transition: transform 100ms ease,
+                background-color 150ms ease;
+}
+
+.opcaoPersonalizacao:hover {
+    background-color: #70ccff;
+    transform: translateY(-2px);
+}
+
+.opcaoPersonalizacao:active {
+    transform: translateY(3px);
+    box-shadow: 0 1px 0 #002a43;
+}
+
+/* BOTÃO DE SALVAR */
+
+#botoesSalvar {
+    grid-column: 1 / -1;
+    margin-top: 5px;
+}
+
+/* RESPONSIVIDADE */
+
+@media (max-width: 650px) {
+    .elementos {
+        grid-template-columns: 1fr;
+        width: 90%;
+    }
+
+    #botoesSalvar {
+        grid-column: 1;
+    }
+
+    .cabecalho h1 {
+        font-size: clamp(32px, 8vw, 55px);
+    }
+}
+
+
+
 /*arrumar com flex box, decididir a imagem do peixe,definir acessorios
 
 PALETA DE CORES 
