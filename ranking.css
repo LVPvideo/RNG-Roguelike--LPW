@@ -1,0 +1,97 @@
+#voltar {
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--azul-oceano);
+}
+
+/* --- Layout da página --- */
+
+.paginaRanking {
+    width: min(1100px, 92%);
+    grid-template-columns: minmax(0, 1fr);
+    align-items: start;
+}
+
+.painelRanking {
+    padding: 24px;
+    background-color: var(--painel);
+    border: 2px solid var(--borda);
+    border-radius: 12px;
+    box-shadow: 0 4px 0 var(--borda);
+}
+
+.painelRanking h2 {
+    margin: 0 0 22px;
+    color: var(--azul-oceano);
+    font-size: 1.4rem;
+}
+
+/* --- Lista de jogadores --- */
+
+#listaRanking {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.itemRanking {
+    display: grid;
+    grid-template-columns: 48px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px dashed var(--borda);
+}
+
+.itemRanking:last-child {
+    border-bottom: none;
+}
+
+.posicao {
+    color: var(--verde);
+    font-family: 'fonteTitulo', Georgia, serif;
+    font-size: 1.6rem;
+    text-align: center;
+}
+
+.nomeJogador {
+    color: var(--texto);
+    font-weight: bold;
+    overflow-wrap: anywhere;
+}
+
+.pontosJogador {
+    color: var(--azul-oceano);
+    font-family: 'fonteTitulo', Georgia, serif;
+    font-size: 1.5rem;
+}
+
+#mensagemVazio {
+    margin: 0;
+    color: var(--texto-suave);
+    text-align: center;
+}
+
+/* --- Telas pequenas (a partir de 320px) --- */
+
+@media (max-width: 560px) {
+    #voltar {
+        top: auto;
+        bottom: 16px;
+        transform: none;
+        right: 20px;
+        font-size: 0.9rem;
+    }
+
+    .painelRanking {
+        padding: 18px;
+    }
+
+    .itemRanking {
+        grid-template-columns: 36px minmax(0, 1fr) auto;
+        gap: 8px;
+    }
+}
