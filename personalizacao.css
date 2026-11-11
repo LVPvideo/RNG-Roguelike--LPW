@@ -1,54 +1,185 @@
-body{
-    background-color: #52bdff;
-    margin: 0;
-}
-
+/* PERSONALIZAÇAO */
 @font-face {
     font-family: 'fonteTitulo';
     src: url('fontes/pixelta/Pixelta.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
 
-.cabecalho {
-    min-height: 15px;
-    padding: 24px 5%;
+@media (max-width: 900px) {
+    main {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 22px;
+    }
 
+    .areaJogo {
+        grid-column: 1 / -1;
+        grid-row: 1;
+        padding: 24px 0 36px;
+    }
+
+    #rankingPagInicial,
+    #tabelaEstatisticas {
+        align-self: stretch;
+    }
+}
+
+@media (max-width: 560px) {
+    header {
+        min-height: 145px;
+        padding: 24px 16px 55px;
+    }
+
+    .logo h1 {
+        font-size: 2.8rem;
+    }
+}
+
+:root {
+    --fundo: #EAF3F0;
+    --azul-leve: #B8D9D5;
+    --azul-oceano: #245766;
+    --azul-profundo: #173B46;
+    --verde: #668C72;
+    --verde-hover: #52745D;
+    --painel: #F7FBF8;
+    --borda: #C5DAD5;
+    --texto: #263B3D;
+    --texto-suave: #647D7D;
+}
+
+[data-tema="escuro"] {
+    /* Modo abissal */
+    --fundo: #102A35;
+    --azul-leve: #193B48;
+    --azul-oceano: #367487;
+    --azul-profundo: #0B2029;
+    --verde: #719B82;
+    --verde-hover: #587D69;
+    --painel: #193B48;
+    --borda: #315461;
+    --texto: #E2EFEC;
+    --texto-suave: #A8C0C0;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body{
     display: flex;
-    align-items: center;
-    justify-content: center;
-
-    background-color: #2da0e7;
-    border-bottom: 3px solid #002a43;
+    flex-direction: column;
+    margin: 0;
+    min-height: 100vh;
+    background-color: var(--fundo);
+    color: var(--texto);
+    font-family: Georgia, 'Times New Roman', serif;
 }
 
-.cabecalho h1 {
+main {
+    width: min(1400px, 92%);
+    margin: 0 auto;
+    padding: 48px 0;
+    flex: 1;
+    display: grid;
+    grid-template-columns: minmax(210px, 0.85fr)
+                           minmax(320px, 1.7fr)
+                           minmax(210px, 0.85fr);
+    align-items: center;
+    gap: 32px;
+}
+
+aside{
+    padding: 24px;
+    background-color: var(--painel);
+    border: 2px solid var(--borda);
+    border-radius: 12px;
+    box-shadow: 0 4px 0 var(--borda);
+}
+
+aside h2 {
+    margin: 0 0 22px;
+    color: var(--azul-oceano);
+    font-size: 1.4rem;
+}
+
+header h1{
     text-align: center;
     font-size: 70px;
-    font-family: 'fonteTitulo';
+    font-family: fonteTitulo;
     letter-spacing: 3px;
     line-height: 1;
     font-weight: normal;
-    margin: 0;
-    color: #002a43;
+    display: inline-block;
+    justify-items: center;
 }
 
-h2 {
-    color: #002a43;
+header{
+    min-height: 155px;
+    padding: 24px 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background-color: var(--azul-leve);
+    border-bottom: 3px solid var(--azul-oceano);
 }
+
+.logo{
+    text-align: center;
+}
+
+.logo h1 {
+    margin: 0;
+    font-family: 'fonteTitulo', Georgia, serif;
+    font-size: clamp(2.8rem, 5vw, 4.5rem);
+    font-weight: normal;
+    letter-spacing: 2px;
+    color: var(--azul-oceano);*PE
+}
+
+.logo h2 {
+    margin: 0;
+    font-family: 'fonteTitulo', Georgia, serif;
+    font-size: clamp(35px, 5vw, 65px);
+    font-weight: lighter;
+    letter-spacing: 1.5px;
+    word-spacing: 7px;
+    color: var(--azul-oceano);
+}
+
+.logo p {
+    margin: 8px 0 0;
+    color: var(--azul-oceano);
+    font-size: 0.95rem;
+}
+
+
+#botaoModoEscuro {*PE
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+#botaoModoEscuro img{
+    width: 35px;
+    height: 35px;
+}
+
 
 #botoesSalvar {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
+    grid-column: 1 / -1;
+    margin-top: 5px;
 }
 
 #botaoSalvarAvatar {
     width: min(100%, 330px);
     padding: 18px 22px;
 
-    border: 3px solid #c13000;
+    border: 3px solid var(--azul-oceano);
     border-radius: 8px;
-    background-color: rgb(255, 100, 34);
-    box-shadow: 0 6px 0 #c13000;
+    background-color: var(--verde);
+    box-shadow: 0 6px 0 var(--azul-oceano);
 
     color: #fffaf2;
     font-family: inherit;
@@ -60,24 +191,55 @@ h2 {
                 box-shadow 100ms ease,
                 background-color 150ms ease;
 }
-
+botoesSalvar
 #botaoSalvarAvatar:hover {
-    background-color: rgb(255, 77, 0)
+    background-color: var(--verde-hover);
 }
 
 #botaoSalvarAvatar:active {
     transform: translateY(5px);
-    box-shadow: 0 1px 0 #c13000;
+    box-shadow: 0 1px 0 var(--azul-oceano);
 }
 
 #botaoSalvarAvatar:focus-visible {
-    outline: 3px solid #c13000;
+    outline: 3px solid var(--azul-oceano);
     outline-offset: 5px;
 }
 
+#botoesSalvar {
+    display: flex;
+    justify-content: center;botoesSalvar
+    margin-top: 20px;
+
+}
 
 #vizualPeixe {
     background-color: #005e99;
+    border: 3px solid #002a43;
+    border-radius: 8px;
+    box-shadow: 0 6px 0 #002a43;
+    width: 330px;
+}
+:root {
+    --fundo: #EAF3F0;
+    --azul-leve: #B8D9D5;
+    --azul-oceano: #245766;
+    --azul-profundo: #173B46;
+    --verde: #668C72;
+    --verde-hover: #52745D;
+    --painel: #F7FBF8;
+    --borda: #C5DAD5;
+    --texto: #263B3D;
+    --texto-suave: #647D7D;
+}
+
+
+.elementos {
+    text-align: center;
+}
+
+#vizualPeixe {
+    background-color: var(--fundo);
     border: 3px solid #002a43;
     border-radius: 8px;
     box-shadow: 0 6px 0 #002a43;
@@ -97,10 +259,6 @@ h2 {
 }
 
 
-
-
-/* ORGANIZAÇÃO DOS ELEMENTOS */
-
 .elementos {
     width: 90%;
     max-width: 1000px;
@@ -112,7 +270,6 @@ h2 {
     align-items: stretch;
 }
 
-/* PAINÉIS PRINCIPAIS */
 
 #vizualPeixe,
 #personalizacaoPeixe {
@@ -159,48 +316,24 @@ h2 {
     box-shadow: 0 1px 0 #002a43;
 }
 
-/* BOTÃO DE SALVAR */
+
 
 #botoesSalvar {
     grid-column: 1 / -1;
     margin-top: 5px;
 }
 
-/* RESPONSIVIDADE */
+#peixe{
 
-@media (max-width: 650px) {
-    .elementos {
-        grid-template-columns: 1fr;
-        width: 90%;
-    }
-
-    #botoesSalvar {
-        grid-column: 1;
-    }
-
-    .cabecalho h1 {
-        font-size: clamp(32px, 8vw, 55px);
-    }
+    width: 250px;
+    height: 250px;
 }
 
+#peixe{
+    border-style: #315461;
+    border-radius: 30px;
+    border: 5px solid var(--azul-oceano);
+    
+}
 
-
-/*arrumar com flex box, decididir a imagem do peixe,definir acessorios
-
-PALETA DE CORES 
-#005e99 azul clarinho do fundo da personalização
-#002a43 azul escuro do contorno
-
-
-rgb(255, 77, 0) laranja do botão quando passa o mouse
-
-#fffaf2 texto do botão
-
-rgb(255, 100, 34) laranja do botão normal
-#c13000 Contorno do botão
-
-#2da0e7 azul do cabeçalho
-
-#52bdff azul do background
-*/
 
