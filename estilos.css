@@ -372,13 +372,14 @@ header{
     display: flex;
     align-items: flex-start;
     gap: 15px;
+    margin-top: 20px;
     margin-left: 50px; 
     width: 90%;
-    border: 4px solid rgb(89, 0, 255);
-    border-top-right-radius: 50px;
-    border-bottom-right-radius: 50px;
+    border: 4px solid var(--azul-oceano);
+    border-top-right-radius: 20px;
+    border-bottom-right-radius: 20px;
     align-self: flex-start;
-    background-color: rgb(241, 236, 216);
+    background-color: var(--painel);
 }
 
 #textos {
@@ -396,7 +397,7 @@ header{
 }
 
 #textos p {
-    padding-top: 50px;
+    padding-top: 20px;
     padding-left: 20px;
 }
 
@@ -407,31 +408,22 @@ header{
 }
 
 #voltar {
-        position: absolute;
-        right: 5%;
-        top: 10%;
-        font-family: 'Segoe UI', Roboto, sans-serif;
-        align-items: center;
-        color: rgb(83, 67, 112);
-        text-decoration: none;
-        font-weight: 500;
-        font-size: 30px;
-        cursor: pointer;
-        
+    position: absolute;
+    left: 5%;
+    transform: translateY(-50%);
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: bold;
+    color: var(--azul-oceano);
+   
 }
-
-#voltar span{ /*alguém sabe alinhar a seta com o texto aí? :P */
-        font-size: 70px;
-        /*padding-bottom: px;*/
-}
-
 #textos h2 {
     padding-left: 10px;
     font-size: 25px;
 }
 
 #pfp {
-    border: 1px solid rgb(89, 0, 255);
+    border-right: 3px solid var(--azul-oceano);
 }
 
 #estatisticasConta {

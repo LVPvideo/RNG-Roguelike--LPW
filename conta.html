@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://googleapis.com"/>
 
 </head>
-<body>
+<body data-tema="claro">
     <header>
         <div class="logo">
             <h2>Sua Conta</h2>
@@ -16,28 +16,29 @@
         </div>
 
         <button id="botaoModoEscuro">
-            <img src="imagens/imgModoEscuro.png" alt="Botao para ativar o Modo escuro ">
+            <img src="imagens/imgModoEscuro.png" alt="Botão para ativar o modo escuro">
         </button>
 
-        <a href="index.html" id="voltar"><span>&#8592;</span> voltar</a>
+        <a href="index.html" id="voltar">&larr; voltar</a>
     </header>
-    
-    <div id="informacoesConta">
-        <img src="imagens/icone-perfil.png" alt="" width="200px" id="pfp">
-        <div id="textos">
-            <h1 class="nomeArroba">arroba</h2>
-            <h2 class="nomeArroba">nome</h2>
-            <p>Biografia: <span id="biografiaUsuario"><i>Escreva sua biografia aqui!</i></span> </p>
+    <div id=" paginaConta">
+        <div id="informacoesConta">
+            <img src="imagens/icone-perfil.png" alt="" width="200px" id="pfp">
+            <div id="textos">
+                <h1 class="nomeArroba">arroba</h2>
+                <h2 class="nomeArroba">nome</h2>
+                <p>Biografia: <span id="biografiaUsuario"><i>Escreva sua biografia aqui!</i></span> </p>
+            </div>
+        </div>
+        <div id="estatisticasConta">
+            <h2>Estatísticas</h2>
+            <p>Dinheiro: <spam  id="dinheiroAtual">0</spam></p>
+            <p>Cliques: <spam id="totalGerNum">0</spam></p>
+            <p>Multiplicador: <spam id="totalMultiplicador">1</spam>x</p>
+            </p>
         </div>
     </div>
-    <div id="estatisticasConta">
-        <h2>Estatísticas</h2>
-        <p>Dinheiro: <spam  id="dinheiroAtual">0</spam></p>
-        <p>Cliques: <spam id="totalGerNum">0</spam></p>
-        <p>Multiplicador: <spam id="totalMultiplicador">1</spam>x</p>
-        </p>
-    </div>
-
     <script src="scriptIndex.js"></script>
+
 </body>
 </html>

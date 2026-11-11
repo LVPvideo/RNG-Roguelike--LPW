@@ -62,3 +62,4 @@ botaoModoEscuro.addEventListener('click', function() {
         document.documentElement.removeAttribute("data-tema");
     
 });
+
