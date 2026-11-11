@@ -29,8 +29,6 @@
     font-size: 1.4rem;
 }
 
-/* --- Formulário de registro --- */
-
 #formRegistro {
     display: flex;
     flex-direction: column;
@@ -122,9 +120,14 @@
     grid-template-columns: 48px minmax(0, 1fr) auto 32px;
     align-items: center;
     gap: 12px;
-    padding: 12px 0;
+    padding: 12px 0 12px 10px;
     border-bottom: 1px dashed var(--borda);
+    border-left: 6px solid transparent;
 }
+
+.lugar1 { border-left-color: #d9a400; }
+.lugar2 { border-left-color: #9aa5ad; }
+.lugar3 { border-left-color: #b4642c; }
 
 .itemRanking:last-child {
     border-bottom: none;

@@ -41,6 +41,8 @@ function removerJogador(nome) {
     }));
 }
 
+const MEDALHAS = ['🥇', '🥈', '🥉'];
+
 const listaRanking = document.querySelector('#listaRanking');
 const mensagemVazio = document.querySelector('#mensagemVazio');
 const botaoLimpar = document.querySelector('#botaoLimpar');
@@ -48,11 +50,14 @@ const botaoLimpar = document.querySelector('#botaoLimpar');
 function criarItemRanking(jogador, posicao) {
     const item = document.createElement('li');
     item.className = 'itemRanking';
+    if (posicao <= MEDALHAS.length) {
+        item.classList.add('lugar' + posicao);
+    }
 
     const textoPosicao = document.createElement('span');
     textoPosicao.className = 'posicao';
-    textoPosicao.textContent = posicao + 'º';
-
+    textoPosicao.textContent = MEDALHAS[posicao - 1] || posicao + 'º';
+    
     const textoNome = document.createElement('span');
     textoNome.className = 'nomeJogador';
     textoNome.textContent = jogador.nome;
@@ -85,7 +90,6 @@ function mostrarRanking() {
     botaoLimpar.hidden = ranking.length === 0;
 }
 
-/* Um só ouvinte na lista serve para todos os botões, mesmo os criados depois. */
 listaRanking.addEventListener('click', function(evento) {
     const botao = evento.target.closest('.botaoRemover');
     if (botao) {
