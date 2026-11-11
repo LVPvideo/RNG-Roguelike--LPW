@@ -35,3 +35,39 @@ function registrarPontuacao(nome, pontos) {
 
     salvarRanking(lista);
 }
+
+const listaRanking = document.querySelector('#listaRanking');
+const mensagemVazio = document.querySelector('#mensagemVazio');
+
+function criarItemRanking(jogador, posicao) {
+    const item = document.createElement('li');
+    item.className = 'itemRanking';
+
+    const textoPosicao = document.createElement('span');
+    textoPosicao.className = 'posicao';
+    textoPosicao.textContent = posicao + 'º';
+
+    const textoNome = document.createElement('span');
+    textoNome.className = 'nomeJogador';
+    textoNome.textContent = jogador.nome;
+
+    const textoPontos = document.createElement('span');
+    textoPontos.className = 'pontosJogador';
+    textoPontos.textContent = jogador.pontos.toLocaleString('pt-BR');
+
+    item.append(textoPosicao, textoNome, textoPontos);
+    return item;
+}
+
+function mostrarRanking() {
+    const ranking = ordenarRanking(carregarRanking());
+
+    listaRanking.replaceChildren();
+    ranking.forEach(function(jogador, indice) {
+        listaRanking.appendChild(criarItemRanking(jogador, indice + 1));
+    });
+
+    mensagemVazio.hidden = ranking.length > 0;
+}
+
+mostrarRanking();
