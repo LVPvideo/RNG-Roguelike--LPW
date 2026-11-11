@@ -1,11 +1,36 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ranking</title>
-</head>
-<body>
-    
-</body>
-</html>
+ <head>
+     <meta charset="UTF-8">
+     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+-    <title>Ranking</title>
++    <title>Ranking | RNGuelike</title>
++    <link rel="stylesheet" href="estilos.css">
+ </head>
+ <body>
+-    
++    <header>
++        <div class="logo">
++            <h2>Ranking</h2>
++            <p>Os maiores sortudos do fundo do mar!</p>
++        </div>
++
++        <button id="botaoModoEscuro">
++            <img src="imagens/imgModoEscuro.png" alt="Botão para ativar o modo escuro">
++        </button>
++
++        <a href="index.html" id="voltar">&larr; voltar</a>
++    </header>
++
++    <main>
++        <section class="painelRanking" aria-labelledby="tituloRanking">
++            <h2 id="tituloRanking">Classificação</h2>
++            <ol id="listaRanking"></ol>
++            <p id="mensagemVazio">Ninguém no ranking ainda. Seja o primeiro!</p>
++        </section>
++    </main>
+ </body>
+-</html>
+
+
+
