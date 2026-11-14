@@ -62,3 +62,17 @@ botaoModoEscuro.addEventListener('click', function() {
         document.documentElement.removeAttribute("data-tema");
     
 });
+
+let botaoSalvar = document.getElementById("botaoSalvar");
+let inputNome = document.getElementById("inputNome");
+let visorNome = document.getElementById("visorNome");
+
+botaoSalvar.addEventListener("click", () => {
+    const novoNome = inputNome.value.trim();
+
+    if (novoNome !== "") {
+        visorNome.textContent = novoNome;
+        
+        localStorage.setItem("nomeUsuario", novoNome);
+    }
+});

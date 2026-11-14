@@ -170,3 +170,13 @@ botaoModoEscuro.addEventListener('click', function() {
     aplicarTema(escuro);
     localStorage.setItem('tema', escuro ? 'escuro' : 'claro');
 });
+
+document.addEventListener("DOMContentLoaded", () => {
+    const campoNome = document.getElementById("campoNome");
+    const nomeSalvo = localStorage.getItem("usuarioNome");
+
+    if (campoNome && nomeSalvo) {
+        campoNome.value = nomeSalvo;
+        campoNome.readOnly = true;
+    }
+});

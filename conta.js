@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-    // 1. MODO ESCURO (Executa em qualquer página que tenha o botão)
+    
     const botaoModoEscuro = document.getElementById("botaoModoEscuro");
     const body = document.body;
 
@@ -20,7 +20,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // 2. EDIÇÃO DA CONTA (Só roda se os elementos da página de conta existirem)
     const visorNome = document.getElementById("visorNome");
     const visorArroba = document.getElementById("visorArroba");
     const visorBio = document.getElementById("visorBio");
@@ -39,9 +38,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const botaoCancelar = document.getElementById("botaoCancelar");
     const botaoTrocarFoto = document.getElementById("botaoTrocarFoto");
 
-    // Verifica se estamos na página da conta antes de executar
+    
     if (visorNome && visorArroba && visorBio) {
-        // Carrega dados salvos
+        
         if (localStorage.getItem("usuarioNome")) visorNome.textContent = localStorage.getItem("usuarioNome");
         if (localStorage.getItem("usuarioArroba")) visorArroba.textContent = localStorage.getItem("usuarioArroba");
         if (localStorage.getItem("usuarioBio")) visorBio.textContent = localStorage.getItem("usuarioBio");
