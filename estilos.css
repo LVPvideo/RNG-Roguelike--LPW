@@ -40,7 +40,13 @@
         transform: none;
         font-size: 0.9rem;
     }
-
+    #criadoresHead {
+        top: auto;
+        bottom: 16px;
+        left: 20px;
+        transform: none;
+        font-size: 0.9rem;
+    }
     main {
         width: 90%;
         padding: 28px 0;
@@ -217,7 +223,17 @@ header{
 
 #conta {
     position: absolute;
-    right: 5%; /*porcentagem é melhor pra organizar em telas de tamanhos diferentes*/
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--azul-oceano);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+#criadoresHead {
+    position: absolute;
+    left: 5%;
     top: 50%;
     transform: translateY(-50%);
     color: var(--azul-oceano);
@@ -600,3 +616,53 @@ textarea.campo-input {
     font-size: 0.85rem;
 }
 
+/* pagina criadores */
+
+#criadoresMain {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#criadoresMain h2 {
+    font-size: 1.5rem;
+    margin-top: 24px;
+    margin-bottom: 4px;
+    padding-bottom: 6px;
+    border-bottom: 2px solid var(--texto-suave, #ccc);
+}
+
+#criadoresMain h2:first-of-type {
+    margin-top: 0;
+}
+
+#criadoresMain p {
+    font-size: 1rem;
+    line-height: 1.6;
+    margin: 0;
+    opacity: 0.9;
+}
+
+#voltarInicioDevs {
+    display: inline-block;
+    align-self: center;
+    margin-top: 30px;
+    padding: 10px 18px;
+    text-decoration: none;
+    color: inherit;
+    border: 1px solid var(--texto-suave, #ccc);
+    border-radius: 8px;
+    font-weight: bold;
+    transition: opacity 0.2s, transform 0.1s;
+    position: absolute;
+    left: 50%;
+    bottom: 10%;
+    transform: translateX(-50%);
+}
+
+#voltarInicioDevs:hover {
+    opacity: 0.75;
+}
