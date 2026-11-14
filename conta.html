@@ -23,6 +23,22 @@
     </header>
 
     <main id="paginaConta">
+        <div id="areaLogin">
+            <h2>Entrar ou Criar Conta</h2>
+            <div class="linha-info">
+                <span class="rotulo">E-mail:</span>
+                <input type="email" id="inputEmail" class="campo-input" placeholder="seu@email.com">
+            </div>
+            <div class="linha-info">
+                <span class="rotulo">Senha:</span>
+                <input type="password" id="inputSenha" class="campo-input" placeholder="Mínimo 6 caracteres">
+            </div>
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <button id="botaoEntrar" class="btn-acao">Entrar</button>
+                <button id="botaoCadastrar" class="btn-acao">Criar Conta</button>
+            </div>
+            <p id="statusAuth" style="margin-top: 8px;"></p>
+        </div>
     <div id="informacoesConta">
         
         <div class="container-foto">
@@ -80,6 +96,6 @@
 </main>
 
     <script src="scriptIndex.js"></script>
-    <script src="conta.js"></script>
+    <script type="module" src="conta.js"></script>
 </body>
 </html>
