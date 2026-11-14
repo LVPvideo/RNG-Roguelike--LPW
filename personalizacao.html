@@ -9,6 +9,8 @@
 </head>
 <body>
     <header>
+         <a href="index.html" id="voltar">&larr; voltar</a>
+        
         <div class="cabecalho">
             <h1>Personalize aqui seu peixe!</h1> 
             
@@ -17,6 +19,8 @@
         <button id="botaoModoEscuro">
             <img src="imagens/imgModoEscuro.png" alt="Botao para ativar o Modo escuro ">
         </button>
+
+       
         
         
     </header>
@@ -24,32 +28,55 @@
     <div class = "elementos">
         <div id = "vizualPeixe">
             <h2>Seu peixinho</h2>
-            <img id = "peixe" src="imagens/peixe.png" alt="Peixe">
+            <div id="areaPeixe">
+                <img id="peixe" src="imagens/peixe.png" alt="Peixe">
+                    
+                <img id="acessorioEquipado" alt="" hidden>
+            </div>
 
             
         </div>
 
+        
+
         <div id = "personalizacaoPeixe">
+
             <div class="opcoesPersonalizacao">
 
-            <button class="opcaoPersonalizacao" type="button">
-                Chapeu
+            <button id="botaoAcessorios" class="opcaoPersonalizacao" type="button">
+                Acessórios
             </button>
 
             <button class="opcaoPersonalizacao" type="button">
                 Cor
+                <input type="color" id="seletorCor" value="#52bdff">
             </button>
+
+            
 
             <button class="opcaoPersonalizacao" type="button">
-                Acessórios
+                Fundo
             </button>
-        </div>
-        </div>
 
-        <div id="botoesSalvar">
+        </div>
+        <section id="loja">
+                <p>
+                    Suas moedas:
+                    <strong id="saldoMoedas">0</strong>
+                </p>
+
+                <div id="itensLoja"></div>
+
+                <p id="mensagemLoja"></p>
+            </section>  
+        
+    </div>
+
+     <div id="botoesSalvar">
             <button id="botaoSalvarAvatar">Salvar avatar!</button>
         </div>
-    </div>
+
+
     <script src="personalizacao.js"></script>
 </body>
 </html>
