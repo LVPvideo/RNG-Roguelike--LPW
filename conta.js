@@ -4,7 +4,7 @@ import {
     signInWithEmailAndPassword, 
     onAuthStateChanged 
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { ref, set, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+import { ref, get, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const botaoModoEscuro = document.getElementById("botaoModoEscuro");
 const body = document.body;
@@ -87,6 +87,7 @@ onAuthStateChanged(auth, async (usuario) => {
             if (dados.nome) visorNome.textContent = dados.nome;
             if (dados.arroba) visorArroba.textContent = dados.arroba;
             if (dados.bio) visorBio.textContent = dados.bio;
+            if (dados.foto && pfp) pfp.src = dados.foto;
         }
     } else {
         if (areaLogin) areaLogin.style.display = "block";
@@ -122,7 +123,7 @@ if (botaoSalvar) {
         const novaBio = inputBio.value;
 
         try {
-            await set(ref(db, "usuarios/" + usuario.uid), {
+            await update(ref(db, "usuarios/" + usuario.uid), {
                 nome: novoNome,
                 arroba: novoArroba,
                 bio: novaBio
@@ -141,25 +142,51 @@ if (botaoSalvar) {
     });
 }
 
-if (localStorage.getItem("usuarioFoto") && pfp) {
-    pfp.src = localStorage.getItem("usuarioFoto");
-}
+function comprimirImagem(arquivo) {
+    return new Promise((resolve, reject) => {
+        const leitor = new FileReader();
+        leitor.onload = (e) => {
+            const img = new Image();
+            img.onload = () => {
+                const canvas = document.createElement("canvas");
+                const tamanho = 150;
+                canvas.width = tamanho;
+                canvas.height = tamanho;
 
-if (botaoTrocarFoto && inputFoto) {
-    botaoTrocarFoto.addEventListener("click", () => inputFoto.click());
+                const ctx = canvas.getContext("2d");
+                ctx.drawImage(img, 0, 0, tamanho, tamanho);
+
+                resolve(canvas.toDataURL("image/jpeg", 0.8));
+            };
+            img.onerror = () => reject(new Error("Formato de imagem inválido."));
+            img.src = e.target.result;
+        };
+        leitor.onerror = () => reject(new Error("Erro ao ler o arquivo."));
+        leitor.readAsDataURL(arquivo);
+    });
 }
 
 if (inputFoto && pfp) {
-    inputFoto.addEventListener("change", (event) => {
+    inputFoto.addEventListener("change", async (event) => {
         const arquivo = event.target.files[0];
-        if (arquivo) {
-            const leitor = new FileReader();
-            leitor.onload = function(e) {
-                const base64Image = e.target.result;
-                pfp.src = base64Image;
-                localStorage.setItem("usuarioFoto", base64Image);
-            };
-            leitor.readAsDataURL(arquivo);
+        const usuario = auth.currentUser;
+
+        if (!arquivo) return;
+        if (!usuario) return alert("Faça login antes de trocar a foto!");
+
+        try {
+            const fotoComprimida = await comprimirImagem(arquivo);
+
+            pfp.src = fotoComprimida;
+            localStorage.setItem("usuarioFoto", fotoComprimida);
+
+            await update(ref(db, "usuarios/" + usuario.uid), {
+                foto: fotoComprimida
+            });
+        } catch (erro) {
+            alert("Erro ao trocar foto: " + erro.message);
+        } finally {
+            inputFoto.value = ""; 
         }
     });
 }
