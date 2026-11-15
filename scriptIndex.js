@@ -11,6 +11,9 @@ const textoTotalAtual = document.querySelector('#dinheiroAtual');
 const textoCliquesTotal = document.querySelector('#totalGerNum');
 const textoMultiplicador = document.querySelector('#totalMultiplicador');
 
+const nomeContaHeader = document.querySelector('#nomeContaHeader');
+const fotoContaHeader = document.querySelector('#fotoContaHeader');
+
 let dinheiroAtual = Number(localStorage.getItem("dinheiro")) || 0;
 /* Esse código busca nos valores salvos o "dinheiro", e se não achar, o valor é 0 */
 let cliques = Number(localStorage.getItem("cliques")) || 0;
@@ -27,6 +30,13 @@ let modoEscuro = false;
 textoTotalAtual.textContent = dinheiroAtual;
 textoCliquesTotal.textContent = cliques;
 
+if (localStorage.getItem("usuarioNome") && nomeContaHeader) {
+    nomeContaHeader.textContent = localStorage.getItem("usuarioNome");
+}
+if (localStorage.getItem("usuarioFoto") && fotoContaHeader) {
+    fotoContaHeader.src = localStorage.getItem("usuarioFoto");
+}
+
 /* === Carrega dinheiro, cliques e multiplicador da conta logada === */
 onAuthStateChanged(auth, async (usuario) => {
     if (usuario) {
@@ -36,6 +46,15 @@ onAuthStateChanged(auth, async (usuario) => {
             if (dados.dinheiro !== undefined) dinheiroAtual = Number(dados.dinheiro);
             if (dados.cliques !== undefined) cliques = Number(dados.cliques);
             if (dados.multiplicador !== undefined) valorMultiplicador = Number(dados.multiplicador);
+
+            if (dados.nome && nomeContaHeader) {
+                nomeContaHeader.textContent = dados.nome;
+                localStorage.setItem("usuarioNome", dados.nome);
+            }
+            if (dados.foto && fotoContaHeader) {
+                fotoContaHeader.src = dados.foto;
+                localStorage.setItem("usuarioFoto", dados.foto);
+            }
 
             localStorage.setItem("dinheiro", dinheiroAtual);
             localStorage.setItem("cliques", cliques);

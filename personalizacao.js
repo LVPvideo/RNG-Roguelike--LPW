@@ -1,3 +1,6 @@
+import { auth, db } from "./firebase-config.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { ref, get, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const botaoModoEscuro = document.querySelector('#botaoModoEscuro');
 
@@ -124,9 +127,18 @@ loja.onclick = e => {
             return;
         }
 
-        localStorage.setItem('dinheiro', dinheiro - item.preco);
+        const novoSaldo = dinheiro - item.preco;
+        localStorage.setItem('dinheiro', novoSaldo);
         compradosAtuais.push(id);
         localStorage.setItem(chaveComprados, JSON.stringify(compradosAtuais));
+
+        /* === Atualiza o saldo gasto e o item comprado na nuvem === */
+        if (auth.currentUser) {
+            update(ref(db, "usuarios/" + auth.currentUser.uid), {
+                dinheiro: novoSaldo,
+                [chaveComprados]: compradosAtuais
+            });
+        }
 
     } else if (localStorage.getItem(chaveEquipado) === id) {
         localStorage.removeItem(chaveEquipado);
@@ -188,6 +200,44 @@ botaoSalvarAvatar.addEventListener('click', function() {
 
     localStorage.setItem('avatarSalvo', JSON.stringify(avatar));
 
+    /* === Salva o avatar escolhido na nuvem === */
+    if (auth.currentUser) {
+        update(ref(db, "usuarios/" + auth.currentUser.uid), {
+            avatarSalvo: avatar
+        });
+    }
+
     alert('Seu avatar foi salvo com sucesso! :D');
 
+});
+
+/* === Sincroniza saldo, compras e avatar da conta ao abrir a página === */
+onAuthStateChanged(auth, async (usuario) => {
+    if (usuario) {
+        const snapshot = await get(ref(db, "usuarios/" + usuario.uid));
+        if (snapshot.exists()) {
+            const dados = snapshot.val();
+
+            if (dados.dinheiro !== undefined) {
+                localStorage.setItem('dinheiro', dados.dinheiro);
+            }
+            if (dados.acessoriosComprados) {
+                comprados = dados.acessoriosComprados;
+                localStorage.setItem('acessoriosComprados', JSON.stringify(comprados));
+            }
+            if (dados.moldurasCompradas) {
+                moldurasCompradas = dados.moldurasCompradas;
+                localStorage.setItem('moldurasCompradas', JSON.stringify(moldurasCompradas));
+            }
+            if (dados.avatarSalvo) {
+                localStorage.setItem('avatarSalvo', JSON.stringify(dados.avatarSalvo));
+                if (dados.avatarSalvo.cor) {
+                    seletorCor.value = dados.avatarSalvo.cor;
+                    peixe.style.backgroundColor = dados.avatarSalvo.cor;
+                }
+            }
+
+            atualizar();
+        }
+    }
 });

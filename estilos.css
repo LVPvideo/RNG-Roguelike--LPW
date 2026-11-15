@@ -195,6 +195,20 @@ header{
     text-align: center;
 }
 
+#conta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#fotoContaHeader {
+    width: 32px;
+    height: 32px;
+    border-radius: 10%;
+    object-fit: cover;
+    border: 1px solid white;
+}
+
 .logo h1 {
     margin: 0;
     font-family: 'fonteTitulo', Georgia, serif;
