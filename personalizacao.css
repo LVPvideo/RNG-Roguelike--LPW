@@ -504,3 +504,16 @@ header h1 {
 #vizualPeixe {
     align-self: start;
 }
+
+
+#molduraEquipado {
+    position: absolute;
+    width: 310px;
+    height: 310px;
+    top: 48%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+}
+
+
