@@ -2,23 +2,25 @@ import { auth, db } from "./firebase-config.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { ref, get, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-const botaoModoEscuro = document.querySelector('#botaoModoEscuro');
+const botaoModoEscuro = document.querySelector('#botaoModoEscuro, .botaoModoEscuro');
 
 function aplicarTema(escuro) {
     if (escuro) {
-        document.documentElement.setAttribute('data-tema', 'escuro');
+        document.body.setAttribute('data-tema', 'escuro');
     } else {
-        document.documentElement.removeAttribute('data-tema');
+        document.body.setAttribute('data-tema', 'claro');
     }
 }
 
 aplicarTema(localStorage.getItem('tema') === 'escuro');
 
-botaoModoEscuro.addEventListener('click', function() {
-    const escuro = !document.documentElement.hasAttribute('data-tema');
-    aplicarTema(escuro);
-    localStorage.setItem('tema', escuro ? 'escuro' : 'claro');
-});
+if (botaoModoEscuro) {
+    botaoModoEscuro.addEventListener('click', function() {
+        const escuro = document.body.getAttribute('data-tema') !== 'escuro';
+        aplicarTema(escuro);
+        localStorage.setItem('tema', escuro ? 'escuro' : 'claro');
+    });
+}
 
 const seletorCor = document.querySelector('#seletorCor');
 const peixe = document.querySelector('#peixe');
@@ -190,7 +192,7 @@ if (molduraSalva && moldurasCompradas.includes(molduraSalva.id)) {
 
 const botaoSalvarAvatar = document.querySelector('#botaoSalvarAvatar');
 
-botaoSalvarAvatar.addEventListener('click', function() {
+botaoSalvarAvatar.addEventListener('click', async function() {
 
     const avatar = {
         cor: seletorCor.value,
@@ -200,14 +202,32 @@ botaoSalvarAvatar.addEventListener('click', function() {
 
     localStorage.setItem('avatarSalvo', JSON.stringify(avatar));
 
-    /* === Salva o avatar escolhido na nuvem === */
+    /* === Salva o avatar escolhido na nuvem via AJAX (fetch) === */
     if (auth.currentUser) {
-        update(ref(db, "usuarios/" + auth.currentUser.uid), {
-            avatarSalvo: avatar
-        });
-    }
+        try {
+            const token = await auth.currentUser.getIdToken();
+            const url = `${db.app.options.databaseURL}/usuarios/${auth.currentUser.uid}/avatarSalvo.json?auth=${token}`;
 
-    alert('Seu avatar foi salvo com sucesso! :D');
+            const resposta = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(avatar)
+            });
+
+            if (!resposta.ok) {
+                throw new Error('Erro HTTP: ' + resposta.status);
+            }
+
+            alert('Seu avatar foi salvo com sucesso! :D');
+        } catch (erro) {
+            console.error('Erro ao salvar avatar via AJAX:', erro);
+            alert('Avatar salvo localmente, mas houve erro ao sincronizar com a nuvem.');
+        }
+    } else {
+        alert('Seu avatar foi salvo com sucesso! :D');
+    }
 
 });
 

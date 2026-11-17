@@ -71,7 +71,23 @@
     #rankingPagInicial li {
         break-inside: avoid;
     }
-}
+
+    #informacoesConta {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+      }
+    
+      .container-foto {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    
+      #textos {
+        width: 100%;
+      }
+    }
 
 @media (prefers-reduced-motion: reduce) {
     #botaoGerarNum {
@@ -171,6 +187,10 @@ header h1{
     font-weight: normal;
     display: inline-block;
     justify-items: center;
+}
+
+header p, #voltarInicioDevs {
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 header{
@@ -492,25 +512,47 @@ header{
     font-size: 1.5rem;
 }
 
+#areaLogin {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#estatisticasConta {
+    font-family: 'Courier New', Courier, monospace;
+}
+
+#textos {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+.container-foto {
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+}
+
 #voltar {
     position: absolute;
     left: 5%;
     top: 50%;
     transform: translateY(-50%);
-    font-family: inherit;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     font-size: 1rem;
     font-weight: bold;
     color: var(--azul-oceano);
     text-decoration: none;
 }
 
-#botaoModoEscuro {
+.botaoModoEscuro {
     background: transparent;
     border: none;
     cursor: pointer;
 }
 
-#botaoModoEscuro img {
+#botaoModoEscuroInicial {
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+}
+.botaoModoEscuro img {
     width: 35px;
     height: 35px;
 }
@@ -632,20 +674,9 @@ textarea.campo-input {
 
 /* pagina criadores */
 
-#criadoresMain {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 0 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
+
 
 #criadoresMain h2 {
-    font-size: 1.5rem;
-    margin-top: 24px;
-    margin-bottom: 4px;
-    padding-bottom: 6px;
     border-bottom: 2px solid var(--texto-suave, #ccc);
 }
 
@@ -653,12 +684,6 @@ textarea.campo-input {
     margin-top: 0;
 }
 
-#criadoresMain p {
-    font-size: 1rem;
-    line-height: 1.6;
-    margin: 0;
-    opacity: 0.9;
-}
 
 #voltarInicioDevs {
     display: inline-block;
@@ -679,4 +704,29 @@ textarea.campo-input {
 
 #voltarInicioDevs:hover {
     opacity: 0.75;
+}
+
+#criadoresMain {
+    display: inline-block;
+    justify-items: center;
+}
+
+#criadoresMain p, #criadoresMain h1, #criadoresMain h2 {
+    font-family: fonteTitulo;
+    letter-spacing: 2px;
+    line-height: 1;
+    font-weight: normal;
+    text-align: center;
+}
+
+#criadoresMain h1 {
+    font-size: 45px;
+}
+
+#criadoresMain h2 {
+    font-size: 32px;
+}
+
+#criadoresMain p {
+    font-size: 22px;
 }

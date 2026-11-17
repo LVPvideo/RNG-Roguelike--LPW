@@ -155,13 +155,13 @@ header{
 }
 
 
-#botaoModoEscuro {
+.botaoModoEscuro {
     background: transparent;
     border: none;
     cursor: pointer;
 }
 
-#botaoModoEscuro img{
+.botaoModoEscuro img{
     width: 35px;
     height: 35px;
 }
@@ -323,7 +323,7 @@ header h1 {
     color: var(--azul-oceano);
 }
 
-#botaoModoEscuro {
+.botaoModoEscuro {
     position: absolute;
     right: 5%;
     top: 50%;

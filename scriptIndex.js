@@ -4,7 +4,7 @@ import { ref, get, update } from "https://www.gstatic.com/firebasejs/10.12.0/fir
 
 const botaoGerarNum = document.querySelector('#botaoGerarNum'); 
 const botaoMultiplicador = document.querySelector('#aumentarMult');
-const botaoModoEscuro = document.querySelector('#botaoModoEscuro');
+const botaoModoEscuro = document.querySelector('.botaoModoEscuro');
 
 const textoResultado = document.querySelector('#Resultado');
 const textoTotalAtual = document.querySelector('#dinheiroAtual');
@@ -15,20 +15,26 @@ const nomeContaHeader = document.querySelector('#nomeContaHeader');
 const fotoContaHeader = document.querySelector('#fotoContaHeader');
 
 let dinheiroAtual = Number(localStorage.getItem("dinheiro")) || 0;
-/* Esse código busca nos valores salvos o "dinheiro", e se não achar, o valor é 0 */
 let cliques = Number(localStorage.getItem("cliques")) || 0;
 let valorMultiplicador = Number(localStorage.getItem("multiplicador")) || 1;
 
-let modoEscuro = false;
+let modoEscuro = localStorage.getItem("tema") === "escuro";
 
 /* === Fim das Declarações === */
 
 
+/* === Aplica o tema salvo ao carregar a página === */
+if (modoEscuro) {
+    document.body.setAttribute("data-tema", "escuro");
+} else {
+    document.body.setAttribute("data-tema", "claro");
+}
 
-/* === Inicialização dos valores de estatísticas == */
 
-textoTotalAtual.textContent = dinheiroAtual;
-textoCliquesTotal.textContent = cliques;
+/* === Inicialização dos valores de estatísticas === */
+if (textoTotalAtual) textoTotalAtual.textContent = dinheiroAtual;
+if (textoCliquesTotal) textoCliquesTotal.textContent = cliques;
+if (textoMultiplicador) textoMultiplicador.textContent = valorMultiplicador;
 
 if (localStorage.getItem("usuarioNome") && nomeContaHeader) {
     nomeContaHeader.textContent = localStorage.getItem("usuarioNome");
@@ -36,6 +42,7 @@ if (localStorage.getItem("usuarioNome") && nomeContaHeader) {
 if (localStorage.getItem("usuarioFoto") && fotoContaHeader) {
     fotoContaHeader.src = localStorage.getItem("usuarioFoto");
 }
+
 
 /* === Carrega dinheiro, cliques e multiplicador da conta logada === */
 onAuthStateChanged(auth, async (usuario) => {
@@ -67,64 +74,66 @@ onAuthStateChanged(auth, async (usuario) => {
     }
 });
 
-botaoGerarNum.addEventListener('click', function(){
-    let valorGerado, aux = 0;
-    cliques++;
-    for(let i = 0; i < valorMultiplicador; i++) {
-        valorGerado = Math.random();
-        valorGerado = (Math.floor(valorGerado * 100) + 1);
-        aux += valorGerado;
-    }
 
-    dinheiroAtual += aux;
-    localStorage.setItem("dinheiro", dinheiroAtual);
-    localStorage.setItem("cliques", cliques);
+/* === Botão Gerar Número (só roda se existir na página) === */
+if (botaoGerarNum) {
+    botaoGerarNum.addEventListener('click', function() {
+        let valorGerado, aux = 0;
+        cliques++;
+        for (let i = 0; i < valorMultiplicador; i++) {
+            valorGerado = Math.random();
+            valorGerado = (Math.floor(valorGerado * 100) + 1);
+            aux += valorGerado;
+        }
 
-    /* === Salva na nuvem se houver conta logada === */
-    if (auth.currentUser) {
-        update(ref(db, "usuarios/" + auth.currentUser.uid), {
-            dinheiro: dinheiroAtual,
-            cliques: cliques,
-            multiplicador: valorMultiplicador
-        });
-    }
+        dinheiroAtual += aux;
+        localStorage.setItem("dinheiro", dinheiroAtual);
+        localStorage.setItem("cliques", cliques);
 
-    textoResultado.textContent = aux;
-    textoTotalAtual.textContent = dinheiroAtual;
-    textoCliquesTotal.textContent = cliques;
-});
+        /* === Salva na nuvem se houver conta logada === */
+        if (auth.currentUser) {
+            update(ref(db, "usuarios/" + auth.currentUser.uid), {
+                dinheiro: dinheiroAtual,
+                cliques: cliques,
+                multiplicador: valorMultiplicador
+            });
+        }
+
+        if (textoResultado) textoResultado.textContent = aux;
+        if (textoTotalAtual) textoTotalAtual.textContent = dinheiroAtual;
+        if (textoCliquesTotal) textoCliquesTotal.textContent = cliques;
+    });
+}
 
 
-//botaoMultiplicador.addEventListener('click', function() {
-//    valorMultiplicador++;
-//    textoMultiplicador.textContent = valorMultiplicador;
-//});
+/* === Botão Modo Escuro === */
+if (botaoModoEscuro) {
+    botaoModoEscuro.addEventListener('click', function() {
+        modoEscuro = !modoEscuro;
 
-//O código funciona, agora falta mudar o jeito que aumenta o multiplicador :P
+        if (modoEscuro) {
+            document.body.setAttribute("data-tema", "escuro");
+            localStorage.setItem("tema", "escuro");
+        } else {
+            document.body.setAttribute("data-tema", "claro");
+            localStorage.setItem("tema", "claro");
+        }
+    });
+}
 
-botaoModoEscuro.addEventListener('click', function() {
-    if(modoEscuro)
-        modoEscuro = false;
-    else
-        modoEscuro = true;
 
-    if (modoEscuro) 
-        document.documentElement.setAttribute("data-tema", "escuro");
-    else 
-        document.documentElement.removeAttribute("data-tema");
-    
-});
+/* === Edição de Nome (só roda se existir na página) === */
+const botaoSalvar = document.getElementById("botaoSalvar");
+const inputNome = document.getElementById("inputNome");
+const visorNome = document.getElementById("visorNome");
 
-let botaoSalvar = document.getElementById("botaoSalvar");
-let inputNome = document.getElementById("inputNome");
-let visorNome = document.getElementById("visorNome");
+if (botaoSalvar && inputNome && visorNome) {
+    botaoSalvar.addEventListener("click", () => {
+        const novoNome = inputNome.value.trim();
 
-botaoSalvar.addEventListener("click", () => {
-    const novoNome = inputNome.value.trim();
-
-    if (novoNome !== "") {
-        visorNome.textContent = novoNome;
-        
-        localStorage.setItem("nomeUsuario", novoNome);
-    }
-});
+        if (novoNome !== "") {
+            visorNome.textContent = novoNome;
+            localStorage.setItem("nomeUsuario", novoNome);
+        }
+    });
+}
