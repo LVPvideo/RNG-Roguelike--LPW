@@ -4,12 +4,13 @@ import { ref, get, update } from "https://www.gstatic.com/firebasejs/10.12.0/fir
 
 const botaoGerarNum = document.querySelector('#botaoGerarNum'); 
 const botaoMultiplicador = document.querySelector('#aumentarMult');
-const botaoModoEscuro = document.querySelector('.botaoModoEscuro');
+const botaoModoEscuro = document.querySelector('#botaoModoEscuro, .botaoModoEscuro');
 
 const textoResultado = document.querySelector('#Resultado');
 const textoTotalAtual = document.querySelector('#dinheiroAtual');
 const textoCliquesTotal = document.querySelector('#totalGerNum');
 const textoMultiplicador = document.querySelector('#totalMultiplicador');
+const textoDica = document.querySelector('.dica');
 
 const cartasDiv = document.querySelector('#cartasDiv');
 const spanValorAdquirido = document.querySelector('.valorAdquirido');
@@ -26,27 +27,6 @@ let bonusFixoPorClique = Number(localStorage.getItem("bonusFixo")) || 0;
 let maximoDado = Number(localStorage.getItem("maximoDado")) || 100;
 
 let modoEscuro = localStorage.getItem("tema") === "escuro";
-<<<<<<< HEAD
-
-/* === Fim das Declarações === */
-
-
-/* === Aplica o tema salvo ao carregar a página === */
-if (modoEscuro) {
-    document.body.setAttribute("data-tema", "escuro");
-} else {
-    document.body.setAttribute("data-tema", "claro");
-}
-
-
-/* === Inicialização dos valores de estatísticas === */
-if (textoTotalAtual) textoTotalAtual.textContent = dinheiroAtual;
-if (textoCliquesTotal) textoCliquesTotal.textContent = cliques;
-if (textoMultiplicador) textoMultiplicador.textContent = valorMultiplicador;
-=======
-if (modoEscuro) {
-    document.documentElement.setAttribute("data-tema", "escuro");
-}
 
 const baralhoDeCartas = [
     {
@@ -54,7 +34,7 @@ const baralhoDeCartas = [
         descricao: "Aumente seu multiplicador em +1x!",
         efeito: () => {
             valorMultiplicador++;
-            document.querySelector('.dica').textContent = `Os números variam de 1 a ${maximoDado}, e são multiplicados por ${valorMultiplicador}`
+            atualizarTextoDica();
         }
     },
     {
@@ -70,11 +50,7 @@ const baralhoDeCartas = [
         efeito: () => {
             maximoDado += 15;
             localStorage.setItem("maximoDado", maximoDado);
-            document.querySelector('.dica').textContent = `Os números variam de 1 a ${maximoDado}, e são multiplicados por ${valorMultiplicador}`;
-            if(valorMultiplicador <= 1){
-                document.querySelector('.dica').textContent = `Os números variam de 1 a ${maximoDado}`
-                valorMultiplicador = 1;
-            }
+            atualizarTextoDica();
         }
     },
     {
@@ -90,48 +66,97 @@ const baralhoDeCartas = [
         descricao: "Multiplica seu multiplicador atual por 1.5x.",
         efeito: () => {
             valorMultiplicador = Math.max(valorMultiplicador + 1, Math.floor(valorMultiplicador * 1.5));
+            atualizarTextoDica();
         }
     },
     {
         titulo: "Tudo. Ou. Nada...",
         descricao: 'Tenha uma chance de multiplicar seu dinheiro atual por 100, mas caso não consiga... você perde tudo. Chance "1/500"',
         efeito: () => {
-            let valorGerado;
+            const ganhou = Math.floor(Math.random() * 500) === 0;
 
-            
-            valorGerado = Math.random();
-            valorGerado = (Math.floor(valorGerado * 500) === 0);
-            
-
-            if(valorGerado)
+            if (ganhou) {
                 dinheiroAtual = Math.floor(dinheiroAtual * 100);
-            else {
+            } else {
                 dinheiroAtual = 0;
                 valorMultiplicador = 1;
                 maximoDado = 100;
+                bonusFixoPorClique = 0;
                 cliques = Math.max(0, cliques - 1);
-                alert("Vish... não foi dessa vez");
                 proximaMeta = 1895;
 
                 localStorage.setItem("maximoDado", maximoDado);
+                localStorage.setItem("bonusFixo", bonusFixoPorClique);
+                atualizarTextoDica();
+                alert("Vish... não foi dessa vez");
             }
         }
     }
 ];
 
-/* === Fim das Declarações === */
-
-/* === Inicialização dos valores de estatísticas == */
-
-textoTotalAtual.textContent = dinheiroAtual;
-textoCliquesTotal.textContent = cliques;
-document.querySelector('.dica').textContent = `Os números variam de 1 a ${maximoDado}, e são multiplicados por ${valorMultiplicador}`
-
-if(valorMultiplicador <= 1){
-    document.querySelector('.dica').textContent = `Os números variam de 1 a ${maximoDado}`
-    valorMultiplicador = 1;
+/* === Funções Auxiliares === */
+function atualizarTextoDica() {
+    if (!textoDica) return;
+    if (valorMultiplicador <= 1) {
+        valorMultiplicador = 1;
+        textoDica.textContent = `Os números variam de 1 a ${maximoDado}`;
+    } else {
+        textoDica.textContent = `Os números variam de 1 a ${maximoDado}, e são multiplicados por ${valorMultiplicador}`;
+    }
 }
->>>>>>> 8d71c4ffab37b4a0ddac1e38b8061213cbc0893e
+
+function atualizarInterfaceESalvar() {
+    if (textoTotalAtual) textoTotalAtual.textContent = dinheiroAtual;
+    if (textoCliquesTotal) textoCliquesTotal.textContent = cliques;
+    if (textoMultiplicador) textoMultiplicador.textContent = valorMultiplicador;
+
+    localStorage.setItem("dinheiro", dinheiroAtual);
+    localStorage.setItem("cliques", cliques);
+    localStorage.setItem("multiplicador", valorMultiplicador);
+    localStorage.setItem("proximaMeta", proximaMeta);
+
+    if (auth.currentUser) {
+        update(ref(db, "usuarios/" + auth.currentUser.uid), {
+            dinheiro: dinheiroAtual,
+            cliques: cliques,
+            multiplicador: valorMultiplicador
+        });
+    }
+}
+
+function abrirPopUpCartas(metaAtingida) {
+    if (!cartasDiv) return;
+    if (spanValorAdquirido) spanValorAdquirido.textContent = metaAtingida;
+
+    const cartasSorteadas = [...baralhoDeCartas]
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 3);
+
+    botoesCarta.forEach((botao, index) => {
+        const carta = cartasSorteadas[index];
+        const tituloEl = botao.querySelector('h3');
+        const descEl = botao.querySelector('p');
+
+        tituloEl.textContent = carta.titulo;
+        descEl.textContent = carta.descricao;
+
+        botao.onclick = () => {
+            carta.efeito();
+            atualizarInterfaceESalvar();
+            cartasDiv.classList.add('esconder');
+        };
+    });
+
+    cartasDiv.classList.remove('esconder');
+}
+
+/* === Inicialização ao carregar a página === */
+document.body.setAttribute("data-tema", modoEscuro ? "escuro" : "claro");
+
+if (textoTotalAtual) textoTotalAtual.textContent = dinheiroAtual;
+if (textoCliquesTotal) textoCliquesTotal.textContent = cliques;
+if (textoMultiplicador) textoMultiplicador.textContent = valorMultiplicador;
+atualizarTextoDica();
 
 if (localStorage.getItem("usuarioNome") && nomeContaHeader) {
     nomeContaHeader.textContent = localStorage.getItem("usuarioNome");
@@ -140,8 +165,7 @@ if (localStorage.getItem("usuarioFoto") && fotoContaHeader) {
     fotoContaHeader.src = localStorage.getItem("usuarioFoto");
 }
 
-
-/* === Carrega dinheiro, cliques e multiplicador da conta logada === */
+/* === Carrega dados da conta logada === */
 onAuthStateChanged(auth, async (usuario) => {
     if (usuario) {
         const snapshot = await get(ref(db, "usuarios/" + usuario.uid));
@@ -167,161 +191,57 @@ onAuthStateChanged(auth, async (usuario) => {
             if (textoTotalAtual) textoTotalAtual.textContent = dinheiroAtual;
             if (textoCliquesTotal) textoCliquesTotal.textContent = cliques;
             if (textoMultiplicador) textoMultiplicador.textContent = valorMultiplicador;
+            atualizarTextoDica();
         }
     }
 });
 
-<<<<<<< HEAD
-
-/* === Botão Gerar Número (só roda se existir na página) === */
+/* === Botão Gerar Número === */
 if (botaoGerarNum) {
     botaoGerarNum.addEventListener('click', function() {
-        let valorGerado, aux = 0;
+        let aux = 0;
         cliques++;
+
         for (let i = 0; i < valorMultiplicador; i++) {
-            valorGerado = Math.random();
-            valorGerado = (Math.floor(valorGerado * 100) + 1);
+            const valorGerado = Math.floor(Math.random() * maximoDado) + 1;
             aux += valorGerado;
         }
 
+        aux += bonusFixoPorClique;
         dinheiroAtual += aux;
-        localStorage.setItem("dinheiro", dinheiroAtual);
-        localStorage.setItem("cliques", cliques);
+        if (textoResultado) textoResultado.textContent = aux;
 
-        /* === Salva na nuvem se houver conta logada === */
-        if (auth.currentUser) {
-            update(ref(db, "usuarios/" + auth.currentUser.uid), {
-                dinheiro: dinheiroAtual,
-                cliques: cliques,
-                multiplicador: valorMultiplicador
-            });
+        if (dinheiroAtual >= proximaMeta) {
+            const metaAtual = proximaMeta;
+            proximaMeta = Math.floor(proximaMeta * 2.2);
+            abrirPopUpCartas(metaAtual);
         }
 
-        if (textoResultado) textoResultado.textContent = aux;
-        if (textoTotalAtual) textoTotalAtual.textContent = dinheiroAtual;
-        if (textoCliquesTotal) textoCliquesTotal.textContent = cliques;
+        atualizarInterfaceESalvar();
     });
 }
-
 
 /* === Botão Modo Escuro === */
 if (botaoModoEscuro) {
     botaoModoEscuro.addEventListener('click', function() {
         modoEscuro = !modoEscuro;
-
-        if (modoEscuro) {
-            document.body.setAttribute("data-tema", "escuro");
-            localStorage.setItem("tema", "escuro");
-        } else {
-            document.body.setAttribute("data-tema", "claro");
-            localStorage.setItem("tema", "claro");
-        }
+        const tema = modoEscuro ? "escuro" : "claro";
+        document.body.setAttribute("data-tema", tema);
+        localStorage.setItem("tema", tema);
     });
 }
 
-
-/* === Edição de Nome (só roda se existir na página) === */
+/* === Edição de Nome === */
 const botaoSalvar = document.getElementById("botaoSalvar");
 const inputNome = document.getElementById("inputNome");
 const visorNome = document.getElementById("visorNome");
-=======
-botaoGerarNum.addEventListener('click', function() {
-    let aux = 0;
-    cliques++;
-
-    for (let i = 0; i < valorMultiplicador; i++) {
-        const valorGerado = Math.floor(Math.random() * maximoDado) + 1;
-        aux += valorGerado;
-    }
-
-    aux += bonusFixoPorClique;
-    dinheiroAtual += aux;
-    textoResultado.textContent = aux;
-
-    if (dinheiroAtual >= proximaMeta) {
-        const metaAtual = proximaMeta;
-        proximaMeta = Math.floor(proximaMeta * 2.2);
-        abrirPopUpCartas(metaAtual);
-    }
-
-    atualizarInterfaceESalvar();
-});
-
-
-botaoModoEscuro.addEventListener('click', function() {
-    modoEscuro = !modoEscuro;
-
-    if (modoEscuro) {
-        document.documentElement.setAttribute("data-tema", "escuro");
-        localStorage.setItem("tema", "escuro");
-    } else {
-        document.documentElement.removeAttribute("data-tema");
-        localStorage.setItem("tema", "claro");
-    }
-    
-});
->>>>>>> 8d71c4ffab37b4a0ddac1e38b8061213cbc0893e
 
 if (botaoSalvar && inputNome && visorNome) {
     botaoSalvar.addEventListener("click", () => {
         const novoNome = inputNome.value.trim();
-
-<<<<<<< HEAD
-=======
-if (botaoSalvar && inputNome && visorNome) {
-    botaoSalvar.addEventListener("click", () => {
-        const novoNome = inputNome.value.trim();
->>>>>>> 8d71c4ffab37b4a0ddac1e38b8061213cbc0893e
         if (novoNome !== "") {
             visorNome.textContent = novoNome;
             localStorage.setItem("nomeUsuario", novoNome);
         }
     });
-<<<<<<< HEAD
-=======
-}
-
-function abrirPopUpCartas(metaAtingida) {
-    spanValorAdquirido.textContent = metaAtingida;
-
-    const cartasSorteadas = [...baralhoDeCartas]
-        .sort(() => Math.random() - 0.5)
-        .slice(0, 3);
-
-    botoesCarta.forEach((botao, index) => {
-        const carta = cartasSorteadas[index];
-        const tituloEl = botao.querySelector('h3');
-        const descEl = botao.querySelector('p');
-
-        tituloEl.textContent = carta.titulo;
-        descEl.textContent = carta.descricao;
-
-        botao.onclick = () => {
-            carta.efeito();
-            atualizarInterfaceESalvar();
-            cartasDiv.classList.add('esconder');
-        };
-    });
-
-    cartasDiv.classList.remove('esconder');
-}
-
-function atualizarInterfaceESalvar() {
-    textoTotalAtual.textContent = dinheiroAtual;
-    textoCliquesTotal.textContent = cliques;
-    textoMultiplicador.textContent = valorMultiplicador;
-
-    localStorage.setItem("dinheiro", dinheiroAtual);
-    localStorage.setItem("cliques", cliques);
-    localStorage.setItem("multiplicador", valorMultiplicador);
-    localStorage.setItem("proximaMeta", proximaMeta);
-
-    if (auth.currentUser) {
-        update(ref(db, "usuarios/" + auth.currentUser.uid), {
-            dinheiro: dinheiroAtual,
-            cliques: cliques,
-            multiplicador: valorMultiplicador
-        });
-    }
->>>>>>> 8d71c4ffab37b4a0ddac1e38b8061213cbc0893e
 }
