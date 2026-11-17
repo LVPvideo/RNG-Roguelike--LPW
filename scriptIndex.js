@@ -245,3 +245,24 @@ if (botaoSalvar && inputNome && visorNome) {
         }
     });
 }
+
+const favicon = document.querySelector('#favicon');
+
+function atualizarFavicon(urlFoto) {
+    if (favicon && urlFoto) {
+        favicon.href = urlFoto;
+    }
+}
+
+const fotoSalvaLocal = localStorage.getItem("usuarioFoto");
+if (fotoSalvaLocal) {
+    if (fotoContaHeader) fotoContaHeader.src = fotoSalvaLocal;
+    atualizarFavicon(fotoSalvaLocal);
+}
+
+if (dados.foto) {
+    if (fotoContaHeader) fotoContaHeader.src = dados.foto;
+    localStorage.setItem("usuarioFoto", dados.foto);
+    atualizarFavicon(dados.foto);
+}
+
