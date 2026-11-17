@@ -1,5 +1,6 @@
 const CHAVE_RANKING = "ranking";
 
+
 function carregarRanking() {
     try {
         const lista = JSON.parse(localStorage.getItem(CHAVE_RANKING));

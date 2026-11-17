@@ -1,3 +1,4 @@
+
 import { auth, db } from "./firebase-config.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { ref, get, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
@@ -45,7 +46,6 @@ const itens = [
     { id: 'rosa', nome: 'Rosa', imagem: 'imagens/rosa.png', preco: 1000, tipo: 'rosa' }
 ];
 
-
 const molduras = [
     { id: 'recife', nome: 'Recife colorido', imagem: 'imagens/recife.png', preco: 300 },
     { id: 'perolas', nome: 'Pérolas', imagem: 'imagens/perolas.png', preco: 500 },
@@ -67,6 +67,32 @@ const saldo = document.querySelector('#saldoMoedas');
 const peixeAcessorio = document.querySelector('#acessorioEquipado');
 
 let comprados = JSON.parse(localStorage.getItem('acessoriosComprados') || '[]');
+
+const areaPeixe = document.querySelector('#areaPeixe');
+const mensagemLoja = document.querySelector('#mensagemLoja');
+
+// EASTER EGG: verifica se todos os itens foram comprados
+function verificarEasterEgg() {
+    const todosComprados =
+        itens.every(item => comprados.includes(item.id)) &&
+        molduras.every(item => moldurasCompradas.includes(item.id));
+
+    if (
+        todosComprados &&
+        localStorage.getItem('puloPeixeDesbloqueado') !== 'true'
+    ) {
+        if (areaPeixe) {
+            areaPeixe.classList.add('puloCompleto');
+        }
+
+        if (mensagemLoja) {
+            mensagemLoja.textContent =
+                'VOCÊ COMPROU TUDO! O PEIXINHO ESTÁ COMEMORANDO!';
+        }
+
+        localStorage.setItem('puloPeixeDesbloqueado', 'true');
+    }
+}
 
 function atualizar() {
     saldo.textContent = Number(localStorage.getItem('dinheiro')) || 0;
@@ -165,8 +191,8 @@ loja.onclick = e => {
     }
 
     atualizar();
+    verificarEasterEgg();
 };
-
 
 const equipado = itens.find(i => i.id === localStorage.getItem('acessorioEquipado'));
 
@@ -178,6 +204,7 @@ if (equipado && comprados.includes(equipado.id)) {
 
 loja.hidden = true;
 atualizar();
+verificarEasterEgg();
 
 const molduraSalva = molduras.find(
     m => m.id === localStorage.getItem('molduraEquipado')
@@ -187,8 +214,6 @@ if (molduraSalva && moldurasCompradas.includes(molduraSalva.id)) {
     molduraEquipado.src = molduraSalva.imagem;
     molduraEquipado.hidden = false;
 }
-
-
 
 const botaoSalvarAvatar = document.querySelector('#botaoSalvarAvatar');
 
@@ -235,22 +260,27 @@ botaoSalvarAvatar.addEventListener('click', async function() {
 onAuthStateChanged(auth, async (usuario) => {
     if (usuario) {
         const snapshot = await get(ref(db, "usuarios/" + usuario.uid));
+
         if (snapshot.exists()) {
             const dados = snapshot.val();
 
             if (dados.dinheiro !== undefined) {
                 localStorage.setItem('dinheiro', dados.dinheiro);
             }
+
             if (dados.acessoriosComprados) {
                 comprados = dados.acessoriosComprados;
                 localStorage.setItem('acessoriosComprados', JSON.stringify(comprados));
             }
+
             if (dados.moldurasCompradas) {
                 moldurasCompradas = dados.moldurasCompradas;
                 localStorage.setItem('moldurasCompradas', JSON.stringify(moldurasCompradas));
             }
+
             if (dados.avatarSalvo) {
                 localStorage.setItem('avatarSalvo', JSON.stringify(dados.avatarSalvo));
+
                 if (dados.avatarSalvo.cor) {
                     seletorCor.value = dados.avatarSalvo.cor;
                     peixe.style.backgroundColor = dados.avatarSalvo.cor;
@@ -258,6 +288,7 @@ onAuthStateChanged(auth, async (usuario) => {
             }
 
             atualizar();
+            verificarEasterEgg();
         }
     }
 });
