@@ -22,7 +22,7 @@ let dinheiroAtual = Number(localStorage.getItem("dinheiro")) || 0;
 /* Esse código busca nos valores salvos o "dinheiro", e se não achar, o valor é 0 */
 let cliques = Number(localStorage.getItem("cliques")) || 0;
 let valorMultiplicador = Number(localStorage.getItem("multiplicador")) || 1;
-let proximaMeta = Number(localStorage.getItem("proximaMeta")) || 500; // Começa em 500 pontos
+let proximaMeta = Number(localStorage.getItem("proximaMeta")) || 1000;
 let bonusFixoPorClique = Number(localStorage.getItem("bonusFixo")) || 0;
 let maximoDado = Number(localStorage.getItem("maximoDado")) || 100;
 
@@ -71,19 +71,18 @@ const baralhoDeCartas = [
         titulo: "Tudo. Ou. Nada...",
         descricao: 'Tenha uma chance de multiplicar seu dinheiro atual por 100, mas caso não consiga... você perde tudo. Chance "1/500"',
         efeito: () => {
-            let aux = 0, valorGerado;
+            let valorGerado;
 
-            for(let i = 0; i < 5; i++) {
-                valorGerado = Math.random();
-                valorGerado = (Math.floor(valorGerado * 100) + 1);
-                aux += valorGerado;
-            }
+            
+            valorGerado = Math.random();
+            valorGerado = (Math.floor(valorGerado * 500) === 0);
+            
 
             if(aux == 5)
                 dinheiroAtual = Math.floor(dinheiroAtual * 100);
             else {
                 dinheiroAtual = 0;
-                multiplicador = 0;
+                valorMultiplicador = 1;
                 cliques--;
             }
         }
@@ -92,12 +91,6 @@ const baralhoDeCartas = [
 
 /* === Fim das Declarações === */
 
-
-for(let i = 0; i < valorMultiplicador; i++) {
-        valorGerado = Math.random();
-        valorGerado = (Math.floor(valorGerado * 100) + 1);
-        aux += valorGerado;
-    }
 /* === Inicialização dos valores de estatísticas == */
 
 textoTotalAtual.textContent = dinheiroAtual;
@@ -140,40 +133,28 @@ onAuthStateChanged(auth, async (usuario) => {
     }
 });
 
-botaoGerarNum.addEventListener('click', function(){
-    let valorGerado, aux = 0;
+botaoGerarNum.addEventListener('click', function() {
+    let aux = 0;
     cliques++;
-    for(let i = 0; i < valorMultiplicador; i++) {
-        valorGerado = Math.random();
-        valorGerado = (Math.floor(valorGerado * 100) + 1);
+
+    for (let i = 0; i < valorMultiplicador; i++) {
+        const valorGerado = Math.floor(Math.random() * maximoDado) + 1;
         aux += valorGerado;
     }
 
+    aux += bonusFixoPorClique;
     dinheiroAtual += aux;
-    localStorage.setItem("dinheiro", dinheiroAtual);
-    localStorage.setItem("cliques", cliques);
+    textoResultado.textContent = aux;
 
-    /* === Salva na nuvem se houver conta logada === */
-    if (auth.currentUser) {
-        update(ref(db, "usuarios/" + auth.currentUser.uid), {
-            dinheiro: dinheiroAtual,
-            cliques: cliques,
-            multiplicador: valorMultiplicador
-        });
+    if (dinheiroAtual >= proximaMeta) {
+        const metaAtual = proximaMeta;
+        proximaMeta = Math.floor(proximaMeta * 2.2);
+        abrirPopUpCartas(metaAtual);
     }
 
-    textoResultado.textContent = aux;
-    textoTotalAtual.textContent = dinheiroAtual;
-    textoCliquesTotal.textContent = cliques;
+    atualizarInterfaceESalvar();
 });
 
-
-//botaoMultiplicador.addEventListener('click', function() {
-//    valorMultiplicador++;
-//    textoMultiplicador.textContent = valorMultiplicador;
-//});
-
-//O código funciona, agora falta mudar o jeito que aumenta o multiplicador :P
 
 botaoModoEscuro.addEventListener('click', function() {
     if(modoEscuro)
@@ -192,12 +173,56 @@ let botaoSalvar = document.getElementById("botaoSalvar");
 let inputNome = document.getElementById("inputNome");
 let visorNome = document.getElementById("visorNome");
 
-botaoSalvar.addEventListener("click", () => {
-    const novoNome = inputNome.value.trim();
+if (botaoSalvar && inputNome && visorNome) {
+    botaoSalvar.addEventListener("click", () => {
+        const novoNome = inputNome.value.trim();
+        if (novoNome !== "") {
+            visorNome.textContent = novoNome;
+            localStorage.setItem("nomeUsuario", novoNome);
+        }
+    });
+}
 
-    if (novoNome !== "") {
-        visorNome.textContent = novoNome;
-        
-        localStorage.setItem("nomeUsuario", novoNome);
+function abrirPopUpCartas(metaAtingida) {
+    spanValorAdquirido.textContent = metaAtingida;
+
+    const cartasSorteadas = [...baralhoDeCartas]
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 3);
+
+    botoesCarta.forEach((botao, index) => {
+        const carta = cartasSorteadas[index];
+        const tituloEl = botao.querySelector('h3');
+        const descEl = botao.querySelector('p');
+
+        tituloEl.textContent = carta.titulo;
+        descEl.textContent = carta.descricao;
+
+        botao.onclick = () => {
+            carta.efeito();
+            atualizarInterfaceESalvar();
+            cartasDiv.classList.add('esconder');
+        };
+    });
+
+    cartasDiv.classList.remove('esconder');
+}
+
+function atualizarInterfaceESalvar() {
+    textoTotalAtual.textContent = dinheiroAtual;
+    textoCliquesTotal.textContent = cliques;
+    textoMultiplicador.textContent = valorMultiplicador;
+
+    localStorage.setItem("dinheiro", dinheiroAtual);
+    localStorage.setItem("cliques", cliques);
+    localStorage.setItem("multiplicador", valorMultiplicador);
+    localStorage.setItem("proximaMeta", proximaMeta);
+
+    if (auth.currentUser) {
+        update(ref(db, "usuarios/" + auth.currentUser.uid), {
+            dinheiro: dinheiroAtual,
+            cliques: cliques,
+            multiplicador: valorMultiplicador
+        });
     }
-});
+}
