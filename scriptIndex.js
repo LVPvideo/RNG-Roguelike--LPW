@@ -11,6 +11,10 @@ const textoTotalAtual = document.querySelector('#dinheiroAtual');
 const textoCliquesTotal = document.querySelector('#totalGerNum');
 const textoMultiplicador = document.querySelector('#totalMultiplicador');
 
+const cartasDiv = document.querySelector('#cartasDiv');
+const spanValorAdquirido = document.querySelector('.valorAdquirido');
+const botoesCarta = document.querySelectorAll('.carta');
+
 const nomeContaHeader = document.querySelector('#nomeContaHeader');
 const fotoContaHeader = document.querySelector('#fotoContaHeader');
 
@@ -18,13 +22,82 @@ let dinheiroAtual = Number(localStorage.getItem("dinheiro")) || 0;
 /* Esse código busca nos valores salvos o "dinheiro", e se não achar, o valor é 0 */
 let cliques = Number(localStorage.getItem("cliques")) || 0;
 let valorMultiplicador = Number(localStorage.getItem("multiplicador")) || 1;
+let proximaMeta = Number(localStorage.getItem("proximaMeta")) || 500; // Começa em 500 pontos
+let bonusFixoPorClique = Number(localStorage.getItem("bonusFixo")) || 0;
+let maximoDado = Number(localStorage.getItem("maximoDado")) || 100;
 
 let modoEscuro = false;
+
+const baralhoDeCartas = [
+    {
+        titulo: "Multiplicador +1",
+        descricao: "Aumente seu multiplicador em +1x!",
+        efeito: () => {
+            valorMultiplicador++;
+        }
+    },
+    {
+        titulo: "Sorte Grande",
+        descricao: "Ganha instantaneamente +25% do seu dinheiro atual.",
+        efeito: () => {
+            dinheiroAtual = Math.floor(dinheiroAtual * 1.25);
+        }
+    },
+    {
+        titulo: "Dado Aprimorado",
+        descricao: "Os números sorteados agora vão até +15 a mais no limite máximo.",
+        efeito: () => {
+            maximoDado += 15;
+            localStorage.setItem("maximoDado", maximoDado);
+            document.querySelector('.dica').textContent = `Os números variam de 1 a ${maximoDado}`;
+        }
+    },
+    {
+        titulo: "Renda Passiva",
+        descricao: "Ganha +25 de dinheiro garantido a cada clique.",
+        efeito: () => {
+            bonusFixoPorClique += 25;
+            localStorage.setItem("bonusFixo", bonusFixoPorClique);
+        }
+    },
+    {
+        titulo: "Décimo Terceiro",
+        descricao: "Multiplica seu multiplicador atual por 1.5x (arredondado).",
+        efeito: () => {
+            valorMultiplicador = Math.max(valorMultiplicador + 1, Math.floor(valorMultiplicador * 1.5));
+        }
+    },
+    {
+        titulo: "Tudo. Ou. Nada...",
+        descricao: 'Tenha uma chance de multiplicar seu dinheiro atual por 100, mas caso não consiga... você perde tudo. Chance "1/500"',
+        efeito: () => {
+            let aux = 0, valorGerado;
+
+            for(let i = 0; i < 5; i++) {
+                valorGerado = Math.random();
+                valorGerado = (Math.floor(valorGerado * 100) + 1);
+                aux += valorGerado;
+            }
+
+            if(aux == 5)
+                dinheiroAtual = Math.floor(dinheiroAtual * 100);
+            else {
+                dinheiroAtual = 0;
+                multiplicador = 0;
+                cliques--;
+            }
+        }
+    }
+];
 
 /* === Fim das Declarações === */
 
 
-
+for(let i = 0; i < valorMultiplicador; i++) {
+        valorGerado = Math.random();
+        valorGerado = (Math.floor(valorGerado * 100) + 1);
+        aux += valorGerado;
+    }
 /* === Inicialização dos valores de estatísticas == */
 
 textoTotalAtual.textContent = dinheiroAtual;
