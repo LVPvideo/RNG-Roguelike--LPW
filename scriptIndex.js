@@ -26,7 +26,10 @@ let proximaMeta = Number(localStorage.getItem("proximaMeta")) || 1000;
 let bonusFixoPorClique = Number(localStorage.getItem("bonusFixo")) || 0;
 let maximoDado = Number(localStorage.getItem("maximoDado")) || 100;
 
-let modoEscuro = false;
+let modoEscuro = localStorage.getItem("tema") === "escuro";
+if (modoEscuro) {
+    document.documentElement.setAttribute("data-tema", "escuro");
+}
 
 const baralhoDeCartas = [
     {
@@ -34,6 +37,7 @@ const baralhoDeCartas = [
         descricao: "Aumente seu multiplicador em +1x!",
         efeito: () => {
             valorMultiplicador++;
+            document.querySelector('.dica').textContent = `Os números variam de 1 a ${maximoDado}, e são multiplicados por ${valorMultiplicador}`
         }
     },
     {
@@ -49,7 +53,11 @@ const baralhoDeCartas = [
         efeito: () => {
             maximoDado += 15;
             localStorage.setItem("maximoDado", maximoDado);
-            document.querySelector('.dica').textContent = `Os números variam de 1 a ${maximoDado}`;
+            document.querySelector('.dica').textContent = `Os números variam de 1 a ${maximoDado}, e são multiplicados por ${valorMultiplicador}`;
+            if(valorMultiplicador <= 1){
+                document.querySelector('.dica').textContent = `Os números variam de 1 a ${maximoDado}`
+                valorMultiplicador = 1;
+            }
         }
     },
     {
@@ -62,7 +70,7 @@ const baralhoDeCartas = [
     },
     {
         titulo: "Décimo Terceiro",
-        descricao: "Multiplica seu multiplicador atual por 1.5x (arredondado).",
+        descricao: "Multiplica seu multiplicador atual por 1.5x.",
         efeito: () => {
             valorMultiplicador = Math.max(valorMultiplicador + 1, Math.floor(valorMultiplicador * 1.5));
         }
@@ -78,12 +86,17 @@ const baralhoDeCartas = [
             valorGerado = (Math.floor(valorGerado * 500) === 0);
             
 
-            if(aux == 5)
+            if(valorGerado)
                 dinheiroAtual = Math.floor(dinheiroAtual * 100);
             else {
                 dinheiroAtual = 0;
                 valorMultiplicador = 1;
-                cliques--;
+                maximoDado = 100;
+                cliques = Math.max(0, cliques - 1);
+                alert("Vish... não foi dessa vez");
+                proximaMeta = 1895;
+
+                localStorage.setItem("maximoDado", maximoDado);
             }
         }
     }
@@ -95,6 +108,12 @@ const baralhoDeCartas = [
 
 textoTotalAtual.textContent = dinheiroAtual;
 textoCliquesTotal.textContent = cliques;
+document.querySelector('.dica').textContent = `Os números variam de 1 a ${maximoDado}, e são multiplicados por ${valorMultiplicador}`
+
+if(valorMultiplicador <= 1){
+    document.querySelector('.dica').textContent = `Os números variam de 1 a ${maximoDado}`
+    valorMultiplicador = 1;
+}
 
 if (localStorage.getItem("usuarioNome") && nomeContaHeader) {
     nomeContaHeader.textContent = localStorage.getItem("usuarioNome");
@@ -157,15 +176,15 @@ botaoGerarNum.addEventListener('click', function() {
 
 
 botaoModoEscuro.addEventListener('click', function() {
-    if(modoEscuro)
-        modoEscuro = false;
-    else
-        modoEscuro = true;
+    modoEscuro = !modoEscuro;
 
-    if (modoEscuro) 
+    if (modoEscuro) {
         document.documentElement.setAttribute("data-tema", "escuro");
-    else 
+        localStorage.setItem("tema", "escuro");
+    } else {
         document.documentElement.removeAttribute("data-tema");
+        localStorage.setItem("tema", "claro");
+    }
     
 });
 
