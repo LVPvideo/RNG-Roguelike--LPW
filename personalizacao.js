@@ -259,6 +259,39 @@ botaoSalvarAvatar.addEventListener('click', async function() {
 
 /* === Sincroniza saldo, compras e avatar da conta ao abrir a página === */
 onAuthStateChanged(auth, async (usuario) => {
+    function aplicarAvatarNaTela(avatar) {
+        if (!avatar) return;
+    
+        if (avatar.cor) {
+            seletorCor.value = avatar.cor;
+            peixe.style.backgroundColor = avatar.cor;
+        }
+    
+        if (avatar.acessorio) {
+            localStorage.setItem('acessorioEquipado', avatar.acessorio);
+            const item = itens.find(i => i.id === avatar.acessorio);
+            if (item) {
+                peixeAcessorio.src = item.imagem;
+                peixeAcessorio.className = item.tipo;
+                peixeAcessorio.hidden = false;
+            }
+        } else {
+            localStorage.removeItem('acessorioEquipado');
+            peixeAcessorio.hidden = true;
+        }
+    
+        if (avatar.moldura) {
+            localStorage.setItem('molduraEquipado', avatar.moldura);
+            const moldura = molduras.find(m => m.id === avatar.moldura);
+            if (moldura) {
+                molduraEquipado.src = moldura.imagem;
+                molduraEquipado.hidden = false;
+            }
+        } else {
+            localStorage.removeItem('molduraEquipado');
+            molduraEquipado.hidden = true;
+        }
+    }
     if (usuario) {
         const snapshot = await get(ref(db, "usuarios/" + usuario.uid));
 
@@ -281,11 +314,7 @@ onAuthStateChanged(auth, async (usuario) => {
 
             if (dados.avatarSalvo) {
                 localStorage.setItem('avatarSalvo', JSON.stringify(dados.avatarSalvo));
-
-                if (dados.avatarSalvo.cor) {
-                    seletorCor.value = dados.avatarSalvo.cor;
-                    peixe.style.backgroundColor = dados.avatarSalvo.cor;
-                }
+                aplicarAvatarNaTela(dados.avatarSalvo);
             }
 
             atualizar();
