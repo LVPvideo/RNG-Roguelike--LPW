@@ -215,6 +215,7 @@ if (molduraSalva && moldurasCompradas.includes(molduraSalva.id)) {
     molduraEquipado.hidden = false;
 }
 
+
 const botaoSalvarAvatar = document.querySelector('#botaoSalvarAvatar');
 
 botaoSalvarAvatar.addEventListener('click', async function() {
