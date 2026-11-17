@@ -1,4 +1,3 @@
-
 import { auth, db } from "./firebase-config.js";
 import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { ref, get, update } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
@@ -7,8 +6,10 @@ const botaoModoEscuro = document.querySelector('#botaoModoEscuro, .botaoModoEscu
 
 function aplicarTema(escuro) {
     if (escuro) {
+        document.documentElement.setAttribute('data-tema', 'escuro');
         document.body.setAttribute('data-tema', 'escuro');
     } else {
+        document.documentElement.removeAttribute('data-tema');
         document.body.setAttribute('data-tema', 'claro');
     }
 }
@@ -17,7 +18,7 @@ aplicarTema(localStorage.getItem('tema') === 'escuro');
 
 if (botaoModoEscuro) {
     botaoModoEscuro.addEventListener('click', function() {
-        const escuro = document.body.getAttribute('data-tema') !== 'escuro';
+        const escuro = localStorage.getItem('tema') !== 'escuro';
         aplicarTema(escuro);
         localStorage.setItem('tema', escuro ? 'escuro' : 'claro');
     });
@@ -30,9 +31,17 @@ const avatarSalvo = JSON.parse(
     localStorage.getItem('avatarSalvo') || 'null'
 );
 
-if (avatarSalvo && avatarSalvo.cor) {
-    seletorCor.value = avatarSalvo.cor;
-    peixe.style.backgroundColor = avatarSalvo.cor;
+if (avatarSalvo) {
+    if (avatarSalvo.cor) {
+        seletorCor.value = avatarSalvo.cor;
+        peixe.style.backgroundColor = avatarSalvo.cor;
+    }
+    if (avatarSalvo.acessorio) {
+        localStorage.setItem('acessorioEquipado', avatarSalvo.acessorio);
+    }
+    if (avatarSalvo.moldura) {
+        localStorage.setItem('molduraEquipado', avatarSalvo.moldura);
+    }
 }
 
 seletorCor.addEventListener('input', function() {
@@ -70,6 +79,40 @@ let comprados = JSON.parse(localStorage.getItem('acessoriosComprados') || '[]');
 
 const areaPeixe = document.querySelector('#areaPeixe');
 const mensagemLoja = document.querySelector('#mensagemLoja');
+
+function aplicarAvatarNaTela(avatar) {
+    if (!avatar) return;
+
+    if (avatar.cor) {
+        seletorCor.value = avatar.cor;
+        peixe.style.backgroundColor = avatar.cor;
+    }
+
+    if (avatar.acessorio) {
+        localStorage.setItem('acessorioEquipado', avatar.acessorio);
+        const item = itens.find(i => i.id === avatar.acessorio);
+        if (item) {
+            peixeAcessorio.src = item.imagem;
+            peixeAcessorio.className = item.tipo;
+            peixeAcessorio.hidden = false;
+        }
+    } else {
+        localStorage.removeItem('acessorioEquipado');
+        peixeAcessorio.hidden = true;
+    }
+
+    if (avatar.moldura) {
+        localStorage.setItem('molduraEquipado', avatar.moldura);
+        const moldura = molduras.find(m => m.id === avatar.moldura);
+        if (moldura) {
+            molduraEquipado.src = moldura.imagem;
+            molduraEquipado.hidden = false;
+        }
+    } else {
+        localStorage.removeItem('molduraEquipado');
+        molduraEquipado.hidden = true;
+    }
+}
 
 // EASTER EGG: verifica se todos os itens foram comprados
 function verificarEasterEgg() {
@@ -222,8 +265,8 @@ botaoSalvarAvatar.addEventListener('click', async function() {
 
     const avatar = {
         cor: seletorCor.value,
-        acessorio: localStorage.getItem('acessorioEquipado'),
-        moldura: localStorage.getItem('molduraEquipado')
+        acessorio: localStorage.getItem('acessorioEquipado') || "",
+        moldura: localStorage.getItem('molduraEquipado') || ""
     };
 
     localStorage.setItem('avatarSalvo', JSON.stringify(avatar));
@@ -232,7 +275,8 @@ botaoSalvarAvatar.addEventListener('click', async function() {
     if (auth.currentUser) {
         try {
             const token = await auth.currentUser.getIdToken();
-            const url = `${db.app.options.databaseURL}/usuarios/${auth.currentUser.uid}/avatarSalvo.json?auth=${token}`;
+            const baseUrl = db.app.options.databaseURL.replace(/\/$/, '');
+            const url = `${baseUrl}/usuarios/${auth.currentUser.uid}/avatarSalvo.json?auth=${token}`;
 
             const resposta = await fetch(url, {
                 method: 'PUT',
@@ -249,49 +293,16 @@ botaoSalvarAvatar.addEventListener('click', async function() {
             alert('Seu avatar foi salvo com sucesso! :D');
         } catch (erro) {
             console.error('Erro ao salvar avatar via AJAX:', erro);
-            alert('Avatar salvo localmente, mas houve erro ao sincronizar com a nuvem.');
+            alert('Avatar salvo localmente, mas houve erro ao sincronizar com a nuvem: ' + erro.message);
         }
     } else {
-        alert('Seu avatar foi salvo com sucesso! :D');
+        alert('Seu avatar foi salvo localmente! :D');
     }
 
 });
 
 /* === Sincroniza saldo, compras e avatar da conta ao abrir a página === */
 onAuthStateChanged(auth, async (usuario) => {
-    function aplicarAvatarNaTela(avatar) {
-        if (!avatar) return;
-    
-        if (avatar.cor) {
-            seletorCor.value = avatar.cor;
-            peixe.style.backgroundColor = avatar.cor;
-        }
-    
-        if (avatar.acessorio) {
-            localStorage.setItem('acessorioEquipado', avatar.acessorio);
-            const item = itens.find(i => i.id === avatar.acessorio);
-            if (item) {
-                peixeAcessorio.src = item.imagem;
-                peixeAcessorio.className = item.tipo;
-                peixeAcessorio.hidden = false;
-            }
-        } else {
-            localStorage.removeItem('acessorioEquipado');
-            peixeAcessorio.hidden = true;
-        }
-    
-        if (avatar.moldura) {
-            localStorage.setItem('molduraEquipado', avatar.moldura);
-            const moldura = molduras.find(m => m.id === avatar.moldura);
-            if (moldura) {
-                molduraEquipado.src = moldura.imagem;
-                molduraEquipado.hidden = false;
-            }
-        } else {
-            localStorage.removeItem('molduraEquipado');
-            molduraEquipado.hidden = true;
-        }
-    }
     if (usuario) {
         const snapshot = await get(ref(db, "usuarios/" + usuario.uid));
 
