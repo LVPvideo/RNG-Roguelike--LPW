@@ -239,6 +239,22 @@ if (botaoGerarNum) {
             abrirPopUpCartas(metaAtual);
         }
 
+        let tempo = 5;
+        botaoGerarNum.disabled = true;
+        botaoGerarNum.textContent = `Aguarde ${tempo}s`;
+
+        const intervalo = setInterval(() => {
+            tempo--;
+
+        if (tempo <= 0) {
+            botaoGerarNum.textContent = `Aguarde ${tempo}s...`;
+        } else {
+            clearInterval(intervalo);
+            botaoGerarNum.disabled = false;
+            botaoGerarNum.innerHTML = 'Gerar Número';
+        }
+    }, 1000);
+
         atualizarInterfaceESalvar();
     });
 }

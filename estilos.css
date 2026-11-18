@@ -126,6 +126,9 @@
     --borda: #C5DAD5;
     --texto: #263B3D;
     --texto-suave: #647D7D;
+    --cinza: #5c6666;
+    --outro-cinza: #8c9696;
+    --cinza-texto: #dfe6e6;
 }
 
 [data-tema="escuro"] {
@@ -140,6 +143,9 @@
     --borda: #315461;
     --texto: #E2EFEC;
     --texto-suave: #A8C0C0;
+    --cinza: #232727;
+    --outro-cinza: #4d5252;
+    --cinza-texto: #dfe6e6;
 }
 
 * {
@@ -166,7 +172,15 @@ main {
                            minmax(320px, 1.7fr)
                            minmax(210px, 0.85fr);
     align-items: center;
-    gap: 32px;
+    gap: 32px;#botaoGerarNum:disabled {
+    background-color: var(--outro-cinza);
+    border-color: var(--cinza);
+    box-shadow: 0 6px 0 --cinza;
+    color: var(--cinza-texto);
+    cursor: not-allowed;
+    transform: none;
+}
+
 }
 
 aside{
@@ -288,14 +302,30 @@ header{
 #criadoresHead {
     position: absolute;
     left: 5%;
-    top: 50%;
+    top: 50%;#botaoGerarNum:disabled {
+    background-color: var(--outro-cinza);
+    border-color: var(--cinza);
+    box-shadow: 0 6px 0 --cinza;
+    color: var(--cinza-texto);
+    cursor: not-allowed;
+    transform: none;
+}
+
     transform: translateY(-50%);
     color: var(--azul-oceano);
     text-decoration: none;
     font-weight: bold;
 }
 
-.emojiTitulo{
+.emojiTitulo{#botaoGerarNum:disabled {
+    background-color: var(--outro-cinza);
+    border-color: var(--cinza);
+    box-shadow: 0 6px 0 --cinza;
+    color: var(--cinza-texto);
+    cursor: not-allowed;
+    transform: none;
+}
+
     color: var(--verde);
     margin-right: 6px;
 }
@@ -353,6 +383,25 @@ header{
     color: var(--texto-suave);
     line-height: 1.5;
 }
+
+#botaoGerarNum:disabled {
+    background-color: var(--outro-cinza);
+    border-color: var(--cinza);
+    box-shadow: 0 6px 0 --cinza;
+    color: var(--cinza-texto);
+    cursor: not-allowed;
+    transform: none;
+}
+
+#botaoGerarNum:disabled:hover {
+    background-color: var(--outro-cinza);
+    border-color: var(--cinza);
+    box-shadow: 0 6px 0 --cinza;
+    color: var(--cinza-texto);
+    cursor: not-allowed;
+    transform: none;
+}
+
 
 .resultado {
     width: min(100%, 330px);
