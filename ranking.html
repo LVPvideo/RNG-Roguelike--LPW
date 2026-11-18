@@ -27,26 +27,19 @@
 
     <main class="paginaRanking">
         <section class="painelRegistro" aria-labelledby="tituloRegistro">
-            <h2 id="tituloRegistro">Registrar pontuação</h2>
+            <h2 id="tituloRegistro">Sua posição</h2>
 
-            <form id="formRegistro">
-                <label for="campoNome">Seu nome</label>
-                <input type="text" id="campoNome" maxlength="20" autocomplete="nickname" placeholder="Ex.: Peixe Sortudo">
-
-                <p class="pontosAtuais">
-                    Seus pontos agora:
-                    <strong id="pontosAtuais">0</strong>
-                </p>
-
-                <button type="submit" id="botaoRegistrar">Registrar no ranking</button>
-                <p id="mensagemFormulario" role="status"></p>
-            </form>
+            <p class="pontosAtuais">
+                <span id="nomeLogado">Entre na sua conta para aparecer aqui.</span>
+                <strong id="posicaoAtual">-</strong>
+            </p>
+            <p id="mensagemFormulario" role="status">O ranking é global e se atualiza sozinho: quem joga logado entra automaticamente, com o maior dinheiro que já teve.</p>
+            <a href="conta.html" id="linkConta">Ir para a conta</a>
         </section>
         <section class="painelRanking" aria-labelledby="tituloRanking">
             <h2 id="tituloRanking">Classificação</h2>
             <ol id="listaRanking"></ol>
-            <p id="mensagemVazio">Ninguém no ranking ainda. Seja o primeiro!</p>
-            <button type="button" id="botaoLimpar">Limpar ranking</button>
+            <p id="mensagemVazio">Ninguém no ranking ainda. Jogue logado e seja o primeiro!</p>
         </section>
     </main>
     <script type="module" src="ranking.js"></script> 

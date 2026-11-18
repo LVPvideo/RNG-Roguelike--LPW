@@ -1,52 +1,18 @@
-const CHAVE_RANKING = "ranking";
-
-
-function carregarRanking() {
-    try {
-        const lista = JSON.parse(localStorage.getItem(CHAVE_RANKING));
-        return Array.isArray(lista) ? lista : [];
-    } catch (erro) {
-        return [];
-    }
-}
-
-function salvarRanking(lista) {
-    localStorage.setItem(CHAVE_RANKING, JSON.stringify(lista));
-}
-
-function ordenarRanking(lista) {
-    return lista.slice().sort(function(a, b) {
-        return b.pontos - a.pontos;
-    });
-}
-
-function registrarPontuacao(nome, pontos) {
-    const lista = carregarRanking();
-    const existente = lista.find(function(jogador) {
-        return jogador.nome.toLowerCase() === nome.toLowerCase();
-    });
-
-    if (!existente) {
-        lista.push({ nome: nome, pontos: pontos, data: new Date().toISOString() });
-    } else if (pontos > existente.pontos) {
-        existente.pontos = pontos;
-        existente.data = new Date().toISOString();
-    }
-
-    salvarRanking(lista);
-}
-
-function removerJogador(nome) {
-    salvarRanking(carregarRanking().filter(function(jogador) {
-        return jogador.nome !== nome;
-    }));
-}
+import { auth, db } from "./firebase-config.js";
+import { onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { ref, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
 const MEDALHAS = ['🥇', '🥈', '🥉'];
+const LIMITE = 100;
 
 const listaRanking = document.querySelector('#listaRanking');
 const mensagemVazio = document.querySelector('#mensagemVazio');
-const botaoLimpar = document.querySelector('#botaoLimpar');
+const nomeLogado = document.querySelector('#nomeLogado');
+const posicaoAtual = document.querySelector('#posicaoAtual');
+const linkConta = document.querySelector('#linkConta');
+
+let uidAtual = null;
+let jogadores = [];
 
 function criarItemRanking(jogador, posicao) {
     const item = document.createElement('li');
@@ -54,11 +20,14 @@ function criarItemRanking(jogador, posicao) {
     if (posicao <= MEDALHAS.length) {
         item.classList.add('lugar' + posicao);
     }
+    if (jogador.uid === uidAtual) {
+        item.classList.add('meuItem');
+    }
 
     const textoPosicao = document.createElement('span');
     textoPosicao.className = 'posicao';
     textoPosicao.textContent = MEDALHAS[posicao - 1] || posicao + 'º';
-    
+
     const textoNome = document.createElement('span');
     textoNome.className = 'nomeJogador';
     textoNome.textContent = jogador.nome;
@@ -67,94 +36,63 @@ function criarItemRanking(jogador, posicao) {
     textoPontos.className = 'pontosJogador';
     textoPontos.textContent = jogador.pontos.toLocaleString('pt-BR');
 
-    const botaoRemover = document.createElement('button');
-    botaoRemover.type = 'button';
-    botaoRemover.className = 'botaoRemover';
-    botaoRemover.textContent = '✕';
-    botaoRemover.title = 'Remover do ranking';
-    botaoRemover.setAttribute('aria-label', 'Remover ' + jogador.nome + ' do ranking');
-    botaoRemover.dataset.nome = jogador.nome;
-
-    item.append(textoPosicao, textoNome, textoPontos, botaoRemover);
+    item.append(textoPosicao, textoNome, textoPontos);
     return item;
 }
 
 function mostrarRanking() {
-    const ranking = ordenarRanking(carregarRanking());
-
     listaRanking.replaceChildren();
-    ranking.forEach(function(jogador, indice) {
+    jogadores.slice(0, LIMITE).forEach(function(jogador, indice) {
         listaRanking.appendChild(criarItemRanking(jogador, indice + 1));
     });
+    mensagemVazio.hidden = jogadores.length > 0;
 
-    mensagemVazio.hidden = ranking.length > 0;
-    botaoLimpar.hidden = ranking.length === 0;
+    const indiceMeu = jogadores.findIndex(function(jogador) {
+        return jogador.uid === uidAtual;
+    });
+
+    if (!uidAtual) {
+        nomeLogado.textContent = 'Entre na sua conta para aparecer aqui.';
+        posicaoAtual.textContent = '-';
+        linkConta.hidden = false;
+    } else if (indiceMeu === -1) {
+        nomeLogado.textContent = 'Você ainda não está no ranking. Gere alguns números!';
+        posicaoAtual.textContent = '-';
+        linkConta.hidden = true;
+    } else {
+        nomeLogado.textContent = jogadores[indiceMeu].nome;
+        posicaoAtual.textContent = (indiceMeu + 1) + 'º lugar';
+        linkConta.hidden = true;
+    }
 }
 
-listaRanking.addEventListener('click', function(evento) {
-    const botao = evento.target.closest('.botaoRemover');
-    if (botao) {
-        removerJogador(botao.dataset.nome);
-        mostrarRanking();
-    }
+onValue(ref(db, 'ranking'), function(snapshot) {
+    jogadores = [];
+    snapshot.forEach(function(filho) {
+        const dados = filho.val();
+        if (dados && Number(dados.pontos) > 0) {
+            jogadores.push({
+                uid: filho.key,
+                nome: String(dados.nome || 'Jogador'),
+                pontos: Number(dados.pontos)
+            });
+        }
+    });
+    jogadores.sort(function(a, b) {
+        return b.pontos - a.pontos;
+    });
+    mostrarRanking();
+}, function() {
+    mensagemVazio.textContent = 'Não foi possível carregar o ranking agora.';
+    mensagemVazio.hidden = false;
 });
 
-let temporizadorLimpar;
-
-botaoLimpar.addEventListener('click', function() {
-    if (!botaoLimpar.classList.contains('confirmando')) {
-        botaoLimpar.classList.add('confirmando');
-        botaoLimpar.textContent = 'Clique de novo para apagar tudo';
-        temporizadorLimpar = setTimeout(restaurarBotaoLimpar, 3000);
-        return;
-    }
-
-    salvarRanking([]);
-    restaurarBotaoLimpar();
+onAuthStateChanged(auth, function(usuario) {
+    uidAtual = usuario ? usuario.uid : null;
     mostrarRanking();
 });
 
-function restaurarBotaoLimpar() {
-    clearTimeout(temporizadorLimpar);
-    botaoLimpar.classList.remove('confirmando');
-    botaoLimpar.textContent = 'Limpar ranking';
-}
-
-mostrarRanking();
-
-const formRegistro = document.querySelector('#formRegistro');
-const campoNome = document.querySelector('#campoNome');
-const textoPontosAtuais = document.querySelector('#pontosAtuais');
-const mensagemFormulario = document.querySelector('#mensagemFormulario');
-
-const pontosAtuais = Number(localStorage.getItem('dinheiro')) || 0;
-textoPontosAtuais.textContent = pontosAtuais.toLocaleString('pt-BR');
-
-function mostrarMensagem(texto, ehErro) {
-    mensagemFormulario.textContent = texto;
-    mensagemFormulario.classList.toggle('erro', ehErro);
-}
-
-formRegistro.addEventListener('submit', function(evento) {
-    evento.preventDefault();
-
-    const nome = campoNome.value.trim();
-
-    if (nome === '') {
-        mostrarMensagem('Digite um nome para entrar no ranking.', true);
-        return;
-    }
-    if (pontosAtuais <= 0) {
-        mostrarMensagem('Gere alguns números no jogo antes de registrar.', true);
-        return;
-    }
-
-    registrarPontuacao(nome, pontosAtuais);
-    mostrarRanking();
-    mostrarMensagem('Pontuação registrada!', false);
-});
-
-const botaoModoEscuro = document.querySelector('#botaoModoEscuro');
+const botaoModoEscuro = document.querySelector('.botaoModoEscuro');
 
 function aplicarTema(escuro) {
     if (escuro) {
@@ -166,18 +104,10 @@ function aplicarTema(escuro) {
 
 aplicarTema(localStorage.getItem('tema') === 'escuro');
 
-botaoModoEscuro.addEventListener('click', function() {
-    const escuro = !document.documentElement.hasAttribute('data-tema');
-    aplicarTema(escuro);
-    localStorage.setItem('tema', escuro ? 'escuro' : 'claro');
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-    const campoNome = document.getElementById("campoNome");
-    const nomeSalvo = localStorage.getItem("usuarioNome");
-
-    if (campoNome && nomeSalvo) {
-        campoNome.value = nomeSalvo;
-        campoNome.readOnly = true;
-    }
-});
+if (botaoModoEscuro) {
+    botaoModoEscuro.addEventListener('click', function() {
+        const escuro = !document.documentElement.hasAttribute('data-tema');
+        aplicarTema(escuro);
+        localStorage.setItem('tema', escuro ? 'escuro' : 'claro');
+    });
+}
