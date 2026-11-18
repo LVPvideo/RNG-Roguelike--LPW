@@ -619,12 +619,13 @@ textarea.campo-input {
 .cartasGeral{
     position: fixed;
     inset: 0;
+    padding: 16px 0;          
+    overflow-y: auto;         
     background-color: rgba(11, 32, 41, 0.65);
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;  
     z-index: 9999;
-    backdrop-filter: blur(4px);
 }
 
 .esconder {
@@ -639,6 +640,7 @@ textarea.campo-input {
     text-align: center;
     max-width: 650px;
     width: 90%;
+    margin: auto;
     box-shadow: 0 10px 30px var(--azul-profundo);
 }
 
@@ -802,5 +804,17 @@ textarea.campo-input {
         grid-column: auto;
         grid-row: auto;
         padding: 12px 0 20px;
+    }
+
+    .paginaInicial .tabelaEstatisticas {
+        display: none;
+    }
+
+    .paginaInicial .cartaContainer {
+        padding: 20px;
+    }
+
+    .paginaInicial .carta {
+        min-height: 110px;
     }
 }
