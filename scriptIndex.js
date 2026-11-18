@@ -25,6 +25,8 @@ let valorMultiplicador = Number(localStorage.getItem("multiplicador")) || 1;
 let proximaMeta = Number(localStorage.getItem("proximaMeta")) || 1000;
 let bonusFixoPorClique = Number(localStorage.getItem("bonusFixo")) || 0;
 let maximoDado = Number(localStorage.getItem("maximoDado")) || 100;
+let recorde = Number(localStorage.getItem("recorde")) || 0;
+let nomeJogador = "";
 
 let modoEscuro = localStorage.getItem("tema") === "escuro";
 
@@ -122,6 +124,19 @@ function atualizarInterfaceESalvar() {
             multiplicador: valorMultiplicador
         });
     }
+    publicarNoRanking();
+}
+
+function publicarNoRanking() {
+    recorde = Math.max(recorde, dinheiroAtual);
+    localStorage.setItem("recorde", recorde);
+
+    if (!auth.currentUser || recorde <= 0) return;
+
+    update(ref(db, "ranking/" + auth.currentUser.uid), {
+        nome: nomeJogador || "Jogador " + auth.currentUser.uid.slice(0, 4),
+        pontos: recorde
+    });
 }
 
 function abrirPopUpCartas(metaAtingida) {
@@ -175,6 +190,9 @@ onAuthStateChanged(auth, async (usuario) => {
             if (dados.cliques !== undefined) cliques = Number(dados.cliques);
             if (dados.multiplicador !== undefined) valorMultiplicador = Number(dados.multiplicador);
 
+            if (dados.nome) {
+                nomeJogador = dados.nome;
+            }
             if (dados.nome && nomeContaHeader) {
                 nomeContaHeader.textContent = dados.nome;
                 localStorage.setItem("usuarioNome", dados.nome);
@@ -193,6 +211,10 @@ onAuthStateChanged(auth, async (usuario) => {
             if (textoMultiplicador) textoMultiplicador.textContent = valorMultiplicador;
             atualizarTextoDica();
         }
+        const rankingSnapshot = await get(ref(db, "ranking/" + usuario.uid));
+        const pontosNaNuvem = rankingSnapshot.exists() ? Number(rankingSnapshot.val().pontos) || 0 : 0;
+        recorde = Math.max(pontosNaNuvem, dinheiroAtual);
+        publicarNoRanking();
     }
 });
 
