@@ -751,3 +751,56 @@ textarea.campo-input {
 #criadoresMain p {
     font-size: 22px;
 }
+
+@media (max-width: 900px) {
+    .paginaInicial main {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+        gap: 22px;
+    }
+
+    .paginaInicial .areaJogo {
+        grid-column: 1 / -1;
+        grid-row: 1;
+        padding: 24px 0 36px;
+    }
+
+    .paginaInicial #rankingPagInicial,
+    .paginaInicial .tabelaEstatisticas {
+        align-self: stretch;
+    }
+}
+
+@media (max-width: 560px) {
+    .paginaInicial header {
+        min-height: 145px;
+        padding: 24px 16px 55px;
+    }
+
+    .paginaInicial #conta,
+    .paginaInicial #criadoresHead {
+        top: auto;
+        bottom: 16px;
+        transform: none;
+        font-size: 0.9rem;
+    }
+
+    .paginaInicial #conta {
+        right: 20px;
+    }
+
+    .paginaInicial #criadoresHead {
+        left: 20px;
+    }
+
+    .paginaInicial main {
+        width: 90%;
+        padding: 28px 0;
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .paginaInicial .areaJogo {
+        grid-column: auto;
+        grid-row: auto;
+        padding: 12px 0 20px;
+    }
+}
