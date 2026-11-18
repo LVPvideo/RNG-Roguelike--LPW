@@ -239,7 +239,7 @@ if (botaoGerarNum) {
             abrirPopUpCartas(metaAtual);
         }
 
-        let tempo = 5;
+        let tempo = 1;
         botaoGerarNum.disabled = true;
         botaoGerarNum.textContent = `Aguarde ${tempo}s`;
 
