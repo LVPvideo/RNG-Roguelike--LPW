@@ -29,86 +29,6 @@
     font-size: 1.4rem;
 }
 
-#formRegistro {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-#formRegistro label {
-    color: var(--texto-suave);
-    font-size: 0.95rem;
-}
-
-#campoNome {
-    padding: 12px;
-    background-color: var(--fundo);
-    border: 2px solid var(--borda);
-    border-radius: 8px;
-    color: var(--texto);
-    font-family: inherit;
-    font-size: 1rem;
-}
-
-#campoNome:focus-visible {
-    outline: 3px solid var(--azul-oceano);
-    outline-offset: 2px;
-}
-
-.pontosAtuais {
-    margin: 12px 0;
-    color: var(--texto-suave);
-}
-
-#pontosAtuais {
-    display: block;
-    color: var(--azul-oceano);
-    font-family: 'fonteTitulo', Georgia, serif;
-    font-size: 2rem;
-    overflow-wrap: anywhere;
-}
-
-#botaoRegistrar {
-    padding: 14px 18px;
-    background-color: var(--verde);
-    border: 3px solid var(--azul-oceano);
-    border-radius: 8px;
-    box-shadow: 0 5px 0 var(--azul-oceano);
-    color: #fffaf2;
-    font-family: inherit;
-    font-size: 1.1rem;
-    font-weight: bold;
-    cursor: pointer;
-    transition: transform 100ms ease,
-                box-shadow 100ms ease,
-                background-color 150ms ease;
-}
-
-#botaoRegistrar:hover {
-    background-color: var(--verde-hover);
-}
-
-#botaoRegistrar:active {
-    transform: translateY(4px);
-    box-shadow: 0 1px 0 var(--azul-oceano);
-}
-
-#botaoRegistrar:focus-visible {
-    outline: 3px solid var(--azul-oceano);
-    outline-offset: 5px;
-}
-
-#mensagemFormulario {
-    min-height: 1.4em;
-    margin: 6px 0 0;
-    color: var(--azul-oceano);
-    font-size: 0.9rem;
-}
-
-#mensagemFormulario.erro {
-    color: #b3261e;
-}
-
 #listaRanking {
     margin: 0;
     padding: 0;
@@ -117,12 +37,16 @@
 
 .itemRanking {
     display: grid;
-    grid-template-columns: 48px minmax(0, 1fr) auto 32px;
+    grid-template-columns: 48px minmax(0, 1fr) auto;
     align-items: center;
     gap: 12px;
     padding: 12px 0 12px 10px;
     border-bottom: 1px dashed var(--borda);
     border-left: 6px solid transparent;
+}
+
+.meuItem {
+    background-color: var(--fundo);
 }
 
 .lugar1 { border-left-color: #d9a400; }
@@ -152,44 +76,6 @@
     font-size: 1.5rem;
 }
 
-.botaoRemover,
-#botaoLimpar {
-    background: transparent;
-    border: 2px solid var(--borda);
-    border-radius: 8px;
-    color: var(--texto-suave);
-    font-family: inherit;
-    cursor: pointer;
-    transition: background-color 150ms ease,
-                color 150ms ease;
-}
-
-.botaoRemover {
-    width: 32px;
-    height: 32px;
-    font-size: 1rem;
-}
-
-#botaoLimpar {
-    margin-top: 18px;
-    padding: 8px 14px;
-    font-size: 0.9rem;
-}
-
-.botaoRemover:hover,
-#botaoLimpar:hover,
-#botaoLimpar.confirmando {
-    background-color: #b3261e;
-    border-color: #b3261e;
-    color: #fffaf2;
-}
-
-.botaoRemover:focus-visible,
-#botaoLimpar:focus-visible {
-    outline: 3px solid var(--azul-oceano);
-    outline-offset: 2px;
-}
-
 #mensagemVazio {
     margin: 0;
     color: var(--texto-suave);
@@ -217,7 +103,31 @@
     }
 
     .itemRanking {
-        grid-template-columns: 36px minmax(0, 1fr) auto 32px;
+        grid-template-columns: 36px minmax(0, 1fr) auto;
         gap: 8px;
     }
+}
+
+#nomeLogado {
+    display: block;
+    font-weight: bold;
+    overflow-wrap: anywhere;
+}
+
+#posicaoAtual {
+    display: block;
+    color: var(--azul-oceano);
+    font-family: 'fonteTitulo', Georgia, serif;
+    font-size: 2rem;
+}
+
+#mensagemFormulario {
+    margin: 0 0 12px;
+    color: var(--texto-suave);
+    font-size: 0.9rem;
+}
+
+#linkConta {
+    color: var(--azul-oceano);
+    font-weight: bold;
 }
